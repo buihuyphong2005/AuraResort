@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Aura Resort - Database Schema Documentation</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #1e293b; margin: 30px; }
+    h1 { color: #0f172a; border-bottom: 3px solid #0284c7; padding-bottom: 10px; font-size: 24pt; }
+    h2 { color: #0369a1; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; margin-top: 30px; font-size: 18pt; }
+    h3 { color: #0f766e; margin-top: 25px; font-size: 14pt; }
+    .badge { background-color: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 10pt; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 25px; font-size: 10.5pt; }
+    th { background-color: #0284c7; color: white; text-align: left; padding: 10px; border: 1px solid #0284c7; }
+    td { padding: 9px; border: 1px solid #cbd5e1; }
+    tr:nth-child(even) { background-color: #f8fafc; }
+    code { font-family: 'Consolas', 'Courier New', monospace; background-color: #f1f5f9; padding: 2px 5px; border-radius: 3px; color: #0f172a; }
+    .meta-box { background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: 15px; margin-bottom: 25px; }
+</style>
+</head>
+<body>
+
+<h1>BÁO CÁO THIẾT KẾ CƠ SỞ DỮ LIỆU - AURA RESORT</h1>
+
+<div class="meta-box">
+    <p><strong>Hệ thống:</strong> Aura Resort - Đặt Phòng & Du Lịch Văn Hoá</p>
+    <p><strong>Cơ sở dữ liệu:</strong> MongoDB / Mongoose ODM & In-Memory Resilient Store</p>
+    <p><strong>Database Name:</strong> <code>hotel_booking</code></p>
+    <p><strong>Tổng số bảng (Collections):</strong> 8 Bảng</p>
+    <p><strong>Ngày xuất file:</strong> 13/09/2026</p>
+</div>
+
+<h2>I. TỔNG QUAN KIẾN TRÚC CƠ SỞ DỮ LIỆU</h2>
+<p>Hệ thống cơ sở dữ liệu Aura Resort được thiết kế theo kiến trúc <strong>Dual-Storage (Kiến trúc lưu trữ kép)</strong>:</p>
+<ol>
+    <li><strong>Lớp CSDL Chính (MongoDB / Mongoose):</strong> Kết nối qua URI cấu hình <code>MONGODB_URI</code> (mặc định: <code>mongodb://localhost:27017/hotel_booking</code>).</li>
+    <li><strong>Lớp Dự Phòng & Bộ Nhớ Tạm (Resilient In-Memory & Seed Data):</strong> Tự động kích hoạt khi MongoDB chưa sẵn sàng, đảm bảo backend hoạt động liên tục.</li>
+</ol>
+
+<h2>II. CHI TIẾT TẤT CẢ 8 BẢNG DỮ LIỆU</h2>
+
+<h3>1. Bảng <code>users</code> (Người Dùng & Hội Viên)</h3>
+<p><strong>File Model:</strong> <code>backend/models/user.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>user-[timestamp]</td><td>Mã người dùng duy nhất</td></tr>
+        <tr><td><code>name</code></td><td>String</td><td>Required</td><td>—</td><td>Họ và tên người dùng</td></tr>
+        <tr><td><code>email</code></td><td>String</td><td>Required, Unique</td><td>—</td><td>Email đăng nhập</td></tr>
+        <tr><td><code>password</code></td><td>String</td><td>Required</td><td>—</td><td>Mật khẩu đã mã hóa</td></tr>
+        <tr><td><code>phone</code></td><td>String</td><td>Optional</td><td>—</td><td>Số điện thoại</td></tr>
+        <tr><td><code>tier</code></td><td>String</td><td>Optional</td><td>Bronze</td><td>Hạng thẻ (Bronze, Silver, Gold, Diamond)</td></tr>
+        <tr><td><code>points</code></td><td>Number</td><td>Optional</td><td>500</td><td>Điểm thưởng tích lũy</td></tr>
+        <tr><td><code>pointsToNextTier</code></td><td>Number</td><td>Optional</td><td>2500</td><td>Điểm cần để thăng hạng</td></tr>
+        <tr><td><code>nextTier</code></td><td>String</td><td>Optional</td><td>Silver</td><td>Tên hạng thẻ kế tiếp</td></tr>
+        <tr><td><code>memberSince</code></td><td>String</td><td>Optional</td><td>YYYY-MM-DD</td><td>Ngày gia nhập câu lạc bộ</td></tr>
+        <tr><td><code>totalBookings</code></td><td>Number</td><td>Optional</td><td>0</td><td>Tổng số lượt đặt phòng thành công</td></tr>
+        <tr><td><code>benefits</code></td><td>Array[String]</td><td>Optional</td><td>[]</td><td>Danh sách quyền lợi hội viên</td></tr>
+        <tr><td><code>notifications</code></td><td>Array[Object]</td><td>Optional</td><td>[]</td><td>Danh sách thông báo cá nhân</td></tr>
+    </tbody>
+</table>
+
+<h3>2. Bảng <code>bookings</code> (Đơn Đặt Phòng)</h3>
+<p><strong>File Model:</strong> <code>backend/models/booking.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>book-[timestamp]</td><td>Mã định danh đơn đặt phòng</td></tr>
+        <tr><td><code>bookingCode</code></td><td>String</td><td>Required, Unique</td><td>AURA-BK-XXXX</td><td>Mã tra cứu đơn hàng</td></tr>
+        <tr><td><code>customerName</code></td><td>String</td><td>Required</td><td>—</td><td>Họ tên khách hàng đặt phòng</td></tr>
+        <tr><td><code>customerEmail</code></td><td>String</td><td>Required</td><td>—</td><td>Email khách hàng</td></tr>
+        <tr><td><code>customerPhone</code></td><td>String</td><td>Required</td><td>—</td><td>Số điện thoại liên hệ</td></tr>
+        <tr><td><code>hotelId</code></td><td>String</td><td>Required, FK</td><td>—</td><td>Mã khu nghỉ dưỡng (hotels.id)</td></tr>
+        <tr><td><code>hotelName</code></td><td>String</td><td>Required</td><td>—</td><td>Tên khu nghỉ dưỡng</td></tr>
+        <tr><td><code>roomId</code></td><td>String</td><td>Required, FK</td><td>—</td><td>Mã hạng phòng (rooms.id)</td></tr>
+        <tr><td><code>roomName</code></td><td>String</td><td>Required</td><td>—</td><td>Tên hạng phòng</td></tr>
+        <tr><td><code>checkInDate</code></td><td>String</td><td>Required</td><td>—</td><td>Ngày nhận phòng (YYYY-MM-DD)</td></tr>
+        <tr><td><code>checkOutDate</code></td><td>String</td><td>Required</td><td>—</td><td>Ngày trả phòng (YYYY-MM-DD)</td></tr>
+        <tr><td><code>nights</code></td><td>Number</td><td>Optional</td><td>1</td><td>Tổng số đêm lưu trú</td></tr>
+        <tr><td><code>guests</code></td><td>Number</td><td>Optional</td><td>2</td><td>Số lượng khách</td></tr>
+        <tr><td><code>roomPrice</code></td><td>Number</td><td>Required</td><td>—</td><td>Giá gốc phòng theo đêm (VND)</td></tr>
+        <tr><td><code>discountAmount</code></td><td>Number</td><td>Optional</td><td>0</td><td>Số tiền giảm giá (VND)</td></tr>
+        <tr><td><code>voucherApplied</code></td><td>String</td><td>Optional</td><td>null</td><td>Mã voucher áp dụng</td></tr>
+        <tr><td><code>totalAmount</code></td><td>Number</td><td>Required</td><td>—</td><td>Tổng tiền thanh toán thực tế (VND)</td></tr>
+        <tr><td><code>paymentStatus</code></td><td>String</td><td>Enum</td><td>paid</td><td>Trạng thái thanh toán (pending, paid, refunded...)</td></tr>
+        <tr><td><code>paymentMethod</code></td><td>String</td><td>Enum</td><td>vnpay</td><td>Phương thức (vnpay, momo, vietqr, card...)</td></tr>
+        <tr><td><code>specialRequests</code></td><td>String</td><td>Optional</td><td>—</td><td>Yêu cầu đặc biệt</td></tr>
+        <tr><td><code>loyaltyPointsEarned</code></td><td>Number</td><td>Optional</td><td>0</td><td>Số điểm thưởng nhận được</td></tr>
+        <tr><td><code>status</code></td><td>String</td><td>Enum</td><td>confirmed</td><td>Trạng thái đơn (confirmed, completed, cancelled)</td></tr>
+    </tbody>
+</table>
+
+<h3>3. Bảng <code>hotels</code> (Khu Nghỉ Dưỡng)</h3>
+<p><strong>File Model:</strong> <code>backend/models/hotel.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>hotel-[slug]</td><td>Mã resort duy nhất</td></tr>
+        <tr><td><code>name</code></td><td>String</td><td>Required</td><td>—</td><td>Tên đầy đủ khu nghỉ dưỡng</td></tr>
+        <tr><td><code>branchCode</code></td><td>String</td><td>Required</td><td>—</td><td>Mã chi nhánh (AURA-DAD, AURA-SP...)</td></tr>
+        <tr><td><code>city</code></td><td>String</td><td>Required</td><td>—</td><td>Thành phố / Tỉnh</td></tr>
+        <tr><td><code>address</code></td><td>String</td><td>Required</td><td>—</td><td>Địa chỉ chi tiết</td></tr>
+        <tr><td><code>rating</code></td><td>Number</td><td>Optional</td><td>5.0</td><td>Điểm đánh giá trung bình</td></tr>
+        <tr><td><code>reviewCount</code></td><td>Number</td><td>Optional</td><td>0</td><td>Tổng số lượt đánh giá</td></tr>
+        <tr><td><code>coordinates</code></td><td>Object</td><td>Required</td><td>{lat, lng}</td><td>Tọa độ GPS</td></tr>
+        <tr><td><code>priceStarting</code></td><td>Number</td><td>Required</td><td>—</td><td>Giá phòng khởi điểm (VND)</td></tr>
+        <tr><td><code>coverImage</code></td><td>String</td><td>Required</td><td>—</td><td>URL ảnh đại diện chính</td></tr>
+        <tr><td><code>amenities</code></td><td>Array[String]</td><td>Optional</td><td>[]</td><td>Danh sách tiện ích nổi bật</td></tr>
+    </tbody>
+</table>
+
+<h3>4. Bảng <code>rooms</code> (Hạng Phòng)</h3>
+<p><strong>File Model:</strong> <code>backend/models/room.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>room-[code]</td><td>Mã phòng duy nhất</td></tr>
+        <tr><td><code>hotelId</code></td><td>String</td><td>Required, FK</td><td>—</td><td>Mã resort sở hữu (hotels.id)</td></tr>
+        <tr><td><code>name</code></td><td>String</td><td>Required</td><td>—</td><td>Tên hạng phòng</td></tr>
+        <tr><td><code>type</code></td><td>String</td><td>Required</td><td>—</td><td>Loại phòng (deluxe, suite, villa...)</td></tr>
+        <tr><td><code>pricePerNight</code></td><td>Number</td><td>Required</td><td>—</td><td>Giá thuê theo đêm (VND)</td></tr>
+        <tr><td><code>capacity</code></td><td>Number</td><td>Required</td><td>—</td><td>Sức chứa tối đa (người)</td></tr>
+        <tr><td><code>bedType</code></td><td>String</td><td>Required</td><td>—</td><td>Loại giường</td></tr>
+        <tr><td><code>areaSqm</code></td><td>Number</td><td>Required</td><td>—</td><td>Diện tích phòng (m²)</td></tr>
+        <tr><td><code>view</code></td><td>String</td><td>Required</td><td>—</td><td>Hướng nhìn (View biển, thung lũng...)</td></tr>
+        <tr><td><code>isAvailable</code></td><td>Boolean</td><td>Optional</td><td>true</td><td>Trạng thái phòng trống</td></tr>
+    </tbody>
+</table>
+
+<h3>5. Bảng <code>reviews</code> (Đánh Giá Khách Hàng)</h3>
+<p><strong>File Model:</strong> <code>backend/models/review.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>rev-[timestamp]</td><td>Mã đánh giá duy nhất</td></tr>
+        <tr><td><code>hotelId</code></td><td>String</td><td>Required, FK</td><td>—</td><td>Mã resort được đánh giá (hotels.id)</td></tr>
+        <tr><td><code>customerName</code></td><td>String</td><td>Required</td><td>—</td><td>Họ tên khách hàng</td></tr>
+        <tr><td><code>rating</code></td><td>Number</td><td>Required (1-5)</td><td>—</td><td>Điểm số xếp hạng tổng thể</td></tr>
+        <tr><td><code>cleanRating</code></td><td>Number</td><td>Optional</td><td>5</td><td>Điểm độ sạch sẽ</td></tr>
+        <tr><td><code>serviceRating</code></td><td>Number</td><td>Optional</td><td>5</td><td>Điểm chất lượng dịch vụ</td></tr>
+        <tr><td><code>comment</code></td><td>String</td><td>Required</td><td>—</td><td>Nội dung bình luận</td></tr>
+        <tr><td><code>likes</code></td><td>Number</td><td>Optional</td><td>0</td><td>Số lượt bấm hữu ích</td></tr>
+    </tbody>
+</table>
+
+<h3>6. Bảng <code>promotions</code> (Mã Giảm Giá & Voucher)</h3>
+<p><strong>File Model:</strong> <code>backend/models/promotion.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>promo-[code]</td><td>Mã định danh ưu đãi</td></tr>
+        <tr><td><code>title</code></td><td>String</td><td>Required</td><td>—</td><td>Tên chương trình khuyến mãi</td></tr>
+        <tr><td><code>code</code></td><td>String</td><td>Required, Unique</td><td>—</td><td>Mã nhập voucher (AURA15, VIPGOLD25...)</td></tr>
+        <tr><td><code>discountPercent</code></td><td>Number</td><td>Required</td><td>—</td><td>Phần trăm chiết khấu (% giảm)</td></tr>
+        <tr><td><code>maxDiscount</code></td><td>Number</td><td>Optional</td><td>2000000</td><td>Số tiền giảm tối đa (VND)</td></tr>
+        <tr><td><code>validUntil</code></td><td>String</td><td>Required</td><td>—</td><td>Ngày hết hạn (YYYY-MM-DD)</td></tr>
+        <tr><td><code>minTier</code></td><td>String</td><td>Optional</td><td>Bronze</td><td>Hạng hội viên áp dụng tối thiểu</td></tr>
+    </tbody>
+</table>
+
+<h3>7. Bảng <code>tourisms</code> (Điểm Du Lịch Văn Hoá)</h3>
+<p><strong>File Model:</strong> <code>backend/models/tourism.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>tour-[slug]</td><td>Mã điểm du lịch</td></tr>
+        <tr><td><code>hotelId</code></td><td>String</td><td>Required, FK</td><td>—</td><td>Mã resort liên kết gần nhất (hotels.id)</td></tr>
+        <tr><td><code>name</code></td><td>String</td><td>Required</td><td>—</td><td>Tên địa danh du lịch</td></tr>
+        <tr><td><code>category</code></td><td>String</td><td>Required</td><td>—</td><td>Danh mục (Di sản, Văn hóa, Thiên nhiên...)</td></tr>
+        <tr><td><code>distanceKm</code></td><td>Number</td><td>Required</td><td>—</td><td>Khoảng cách từ resort (km)</td></tr>
+        <tr><td><code>culturalSignificance</code></td><td>String</td><td>Optional</td><td>—</td><td>Giá trị & ý nghĩa văn hóa lịch sử</td></tr>
+        <tr><td><code>bestTimeToVisit</code></td><td>String</td><td>Optional</td><td>—</td><td>Thời điểm đẹp nhất ghé thăm</td></tr>
+    </tbody>
+</table>
+
+<h3>8. Bảng <code>articles</code> (Bài Viết Cẩm Nang)</h3>
+<p><strong>File Model:</strong> <code>backend/models/article.model.js</code></p>
+<table>
+    <thead>
+        <tr>
+            <th>Tên trường</th>
+            <th>Kiểu dữ liệu</th>
+            <th>Ràng buộc</th>
+            <th>Mặc định</th>
+            <th>Mô tả chi tiết</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>id</code></td><td>String</td><td>Required, Unique</td><td>art-[slug]</td><td>Mã bài viết</td></tr>
+        <tr><td><code>title</code></td><td>String</td><td>Required</td><td>—</td><td>Tiêu đề bài viết</td></tr>
+        <tr><td><code>slug</code></td><td>String</td><td>Required, Unique</td><td>—</td><td>Đường dẫn SEO duy nhất</td></tr>
+        <tr><td><code>category</code></td><td>String</td><td>Optional</td><td>—</td><td>Chuyên mục bài viết</td></tr>
+        <tr><td><code>readTime</code></td><td>String</td><td>Optional</td><td>—</td><td>Thời lượng đọc dự kiến</td></tr>
+        <tr><td><code>content</code></td><td>String</td><td>Required</td><td>—</td><td>Nội dung bài viết (Markdown/HTML)</td></tr>
+    </tbody>
+</table>
+
+<br/>
+<hr/>
+<p><em>Tài liệu được trích xuất tự động từ hệ thống Aura Resort Backend Systems.</em></p>
+</body>
+</html>

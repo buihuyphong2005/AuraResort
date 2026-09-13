@@ -1,0 +1,6 @@
+{
+  "name": "AuraResort - Đặt Phòng & Du Lịch Văn Hoá",
+  "description": "Hệ thống đặt phòng chuỗi khách sạn nghỉ dưỡng cao cấp tích hợp bản đồ chi tiết, thanh toán trực tuyến, đánh giá chi nhánh, thông báo ưu đãi hội viên và trợ lý AI 24/7.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
