@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.js",
-    "build": "vite build && mkdir -p dist && cp -r client/dist/* dist/",
+    "build": "vite build && if not exist dist mkdir dist && xcopy /E /I /Y client\\dist dist",
     "preview": "vite preview",
     "start": "node server.js",
     "clean": "rm -rf dist client/dist",

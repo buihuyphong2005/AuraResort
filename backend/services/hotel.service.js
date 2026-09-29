@@ -22,6 +22,14 @@ export const HotelService = {
     return await RoomModel.find({ hotelId, ...filter });
   },
 
+  async getAllRooms() {
+    return await RoomModel.find({});
+  },
+
+  async updateRoomStock(roomId, totalRooms) {
+    return await RoomModel.updateTotalRooms(roomId, totalRooms);
+  },
+
   async getRoomById(roomId) {
     const room = await RoomModel.findById(roomId);
     if (!room) {

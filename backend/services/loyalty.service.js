@@ -2,8 +2,8 @@ import { UserModel } from '../models/user.model.js';
 import { PromotionModel } from '../models/promotion.model.js';
 
 export const LoyaltyService = {
-  async getProfile() {
-    return await UserModel.getProfile();
+  async getProfile(userId) {
+    return await UserModel.getProfile(userId);
   },
 
   async getPromotions() {
@@ -18,7 +18,7 @@ export const LoyaltyService = {
     return voucher;
   },
 
-  async markNotificationRead(notifId) {
-    return await UserModel.markNotificationRead(notifId);
+  async markNotificationRead(userId, notifId) {
+    return await UserModel.markNotificationRead(userId, notifId);
   }
 };

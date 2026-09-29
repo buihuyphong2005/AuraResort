@@ -48,5 +48,14 @@ export const AuthController = {
         error: err.message
       });
     }
+  },
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await AuthService.getAllUsers();
+      res.json({ success: true, data: users });
+    } catch (err) {
+      res.status(500).json({ success: false, error: err.message });
+    }
   }
 };

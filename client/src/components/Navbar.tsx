@@ -13,6 +13,7 @@ import {
   Star,
   BookOpen,
   User,
+  Users,
   LogOut,
   LogIn
 } from 'lucide-react';
@@ -130,6 +131,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Crown className="w-3.5 h-3.5 text-amber-400" />
             <span>Ưu Đãi Hội Viên</span>
           </button>
+
+          {currentUser?.role === 'admin' && (
+            <button 
+              onClick={() => handleNav('admin')}
+              className={`py-1 cursor-pointer transition-colors flex items-center gap-1.5 ${
+                activePage === 'admin' ? 'text-amber-400 border-b-2 border-amber-400' : 'hover:text-amber-400'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5 text-amber-400" />
+              <span>Quản Trị</span>
+            </button>
+          )}
         </nav>
 
         {/* Right Side: Notifications, Account, and AI Assistant */}
@@ -315,6 +328,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Crown className="w-4 h-4 text-amber-400" />
             <span>Ưu Đãi Hội Viên</span>
           </button>
+
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => handleNav('admin')}
+              className={`w-full text-left py-2 px-3 rounded-xl flex items-center gap-2 ${activePage === 'admin' ? 'bg-amber-500/10 text-amber-400' : 'text-stone-300'}`}
+            >
+              <Users className="w-4 h-4 text-amber-400" />
+              <span>Quản Trị (Admin)</span>
+            </button>
+          )}
 
           {currentUser ? (
             <div className="pt-4 border-t border-stone-800 space-y-2">

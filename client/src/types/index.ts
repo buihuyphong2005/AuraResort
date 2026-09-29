@@ -34,6 +34,8 @@ export interface Room {
   images: string[];
   amenities: string[];
   isAvailable: boolean;
+  totalRooms?: number;
+  availableRooms?: number;
 }
 
 export interface Booking {
@@ -130,6 +132,7 @@ export interface LoyaltyUser {
   nextTier: string;
   memberSince: string;
   totalBookings: number;
+  role?: string;
   benefits: string[];
   notifications: NotificationItem[];
 }

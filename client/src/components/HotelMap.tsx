@@ -49,9 +49,9 @@ export const HotelMap: React.FC<HotelMapProps> = ({
           scrollWheelZoom: false
         });
 
-        // Use high-contrast, clean CartoDB Voyager tiles for luxury aesthetic
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+        // Use public OpenStreetMap tiles that do not require an API key.
+        L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19
         }).addTo(map);
 

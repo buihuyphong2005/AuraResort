@@ -10,6 +10,7 @@ export const BookingService = {
       customerName,
       customerEmail,
       customerPhone,
+      userId,
       hotelId,
       roomId,
       checkInDate,
@@ -29,6 +30,9 @@ export const BookingService = {
 
     const room = await RoomModel.findById(roomId);
     if (!room) throw new Error('Hạng phòng không tồn tại');
+
+    const reservedRoom = await RoomModel.decrementAvailable(roomId);
+    if (!reservedRoom) throw new Error('Hạng phòng này đã hết, vui lòng chọn hạng phòng khác');
 
     // Calculate nights
     const start = new Date(checkInDate);
@@ -85,8 +89,9 @@ export const BookingService = {
     const saved = await BookingModel.create(bookingRecord);
 
     // Reward loyalty points to member
-    await UserModel.addPoints(pointsEarned);
-    await UserModel.addNotification(
+    if (userId) await UserModel.addPoints(userId, pointsEarned);
+    if (userId) await UserModel.addNotification(
+      userId,
       'Đặt phòng thành công #' + bookingCode,
       `Kỳ nghỉ tại ${hotel.name} (${nights} đêm) đã được xác nhận. Bạn nhận được +${pointsEarned} điểm thưởng!`,
       'booking'
@@ -97,6 +102,10 @@ export const BookingService = {
 
   async getBookingsByEmail(email) {
     return await BookingModel.find({ customerEmail: email });
+  },
+
+  async getAllBookings() {
+    return await BookingModel.find({});
   },
 
   async getBookingByCode(code) {

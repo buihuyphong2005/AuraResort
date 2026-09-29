@@ -63,5 +63,13 @@ export const AuthService = {
     }
     const { password: _, ...safeUser } = user;
     return safeUser;
+  },
+
+  async getAllUsers() {
+    const users = await UserModel.getAll();
+    return users.map(u => {
+      const { password, ...safeUser } = u._doc || u;
+      return safeUser;
+    });
   }
 };

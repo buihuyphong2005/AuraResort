@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   nextTier: { type: String, default: 'Silver' },
   memberSince: { type: String, default: () => new Date().toISOString().split('T')[0] },
   totalBookings: { type: Number, default: 0 },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
   benefits: [{ type: String }],
   notifications: [{
     id: String,
@@ -29,7 +30,24 @@ export const MongooseUser = mongoose.models.User || mongoose.model('User', UserS
 // Initial list of registered users
 let memoryUsers = [
   {
+    id: 'user-admin',
+    name: 'Quản Trị Viên AuraResort',
+    email: 'admin@auraresort.vn',
+    password: 'Admin123@',
+    phone: '0901234567',
+    role: 'admin',
+    tier: 'Diamond',
+    points: 99999,
+    pointsToNextTier: 0,
+    nextTier: 'Royalty Elite',
+    memberSince: '2024-01-01',
+    totalBookings: 0,
+    benefits: ['Quyền quản trị toàn hệ thống AuraResort'],
+    notifications: []
+  },
+  {
     ...initialLoyaltyUser,
+    role: 'user',
     password: 'Password123@' // Demo password
   }
 ];
@@ -103,16 +121,32 @@ export const UserModel = {
   },
 
   async getProfile(userId) {
-    if (userId) {
-      const u = memoryUsers.find(user => user.id === userId);
-      if (u) return u;
+    if (!userId) return memoryUsers.find(user => user.role !== 'admin') || null;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const user = await MongooseUser.findOne({ id: userId });
+        if (user) return user;
+      } catch (e) {
+        console.warn('Fallback to memory getProfile:', e.message);
+      }
     }
-    return memoryUsers[0];
+    return memoryUsers.find(user => user.id === userId) || null;
   },
 
   async addPoints(userId, pts) {
-    const target = userId ? memoryUsers.find(u => u.id === userId) : memoryUsers[0];
-    if (target) {
+    if (!userId) return null;
+    let target = null;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        target = await MongooseUser.findOne({ id: userId });
+      } catch (e) {
+        console.warn('Fallback to memory addPoints:', e.message);
+      }
+    }
+    target ||= memoryUsers.find(user => user.id === userId);
+    if (!target) return null;
+
+    {
       target.points += pts;
       target.totalBookings += 1;
       if (target.points >= 6000) {
@@ -128,39 +162,67 @@ export const UserModel = {
         target.nextTier = 'Gold';
         target.pointsToNextTier = 3000 - target.points;
       }
+      if (target.save) await target.save();
       return target;
     }
-    return null;
   },
 
   async markNotificationRead(userId, notifId) {
-    const target = userId ? memoryUsers.find(u => u.id === userId) : memoryUsers[0];
-    if (target) {
-      if (notifId === 'all') {
-        target.notifications.forEach(n => n.read = true);
-      } else {
-        const n = target.notifications.find(item => item.id === notifId);
-        if (n) n.read = true;
+    if (!userId) return null;
+    let target = null;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        target = await MongooseUser.findOne({ id: userId });
+      } catch (e) {
+        console.warn('Fallback to memory markNotificationRead:', e.message);
       }
-      return target;
     }
-    return null;
+    target ||= memoryUsers.find(user => user.id === userId);
+    if (!target) return null;
+    if (notifId === 'all') {
+      target.notifications.forEach(n => n.read = true);
+    } else {
+      const notification = target.notifications.find(item => item.id === notifId);
+      if (notification) notification.read = true;
+    }
+    if (target.save) await target.save();
+    return target;
   },
 
   async addNotification(userId, title, content, type = 'promo') {
-    const target = userId ? memoryUsers.find(u => u.id === userId) : memoryUsers[0];
-    if (target) {
-      const newNotif = {
-        id: 'notif-' + Date.now(),
-        title,
-        content,
-        time: 'Vừa xong',
-        read: false,
-        type
-      };
-      target.notifications.unshift(newNotif);
-      return newNotif;
+    if (!userId) return null;
+    let target = null;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        target = await MongooseUser.findOne({ id: userId });
+      } catch (e) {
+        console.warn('Fallback to memory addNotification:', e.message);
+      }
     }
-    return null;
+    target ||= memoryUsers.find(user => user.id === userId);
+    if (!target) return null;
+    const newNotification = {
+      id: 'notif-' + Date.now(),
+      title,
+      content,
+      time: 'Vừa xong',
+      read: false,
+      type
+    };
+    target.notifications.unshift(newNotification);
+    if (target.save) await target.save();
+    return newNotification;
+  },
+
+  async getAll() {
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const users = await MongooseUser.find({});
+        if (users && users.length > 0) return users;
+      } catch (e) {
+        console.warn('Fallback to memory getAll users:', e.message);
+      }
+    }
+    return memoryUsers;
   }
 };

@@ -189,7 +189,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Ban công ngắm biển', 'Bồn tắm nằm hướng biển', 'Cà phê Nespresso', 'Smart TV 65 inch', 'Wifi 6'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 12,
+    availableRooms: 12
   },
   {
     id: 'room-dad-2',
@@ -206,7 +208,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Phòng khách riêng biệt', 'Quầy bar mini miễn phí', 'Đặc quyền Club Lounge', 'Bồn tắm sục Jacuzzi', 'Quản gia hỗ trợ 24/7'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
   },
   {
     id: 'room-dad-3',
@@ -223,7 +227,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Hồ bơi vô cực riêng tư', 'Bữa sáng nổi Floating Breakfast', 'Bếp ăn sang trọng', 'Đưa đón limousine sân bay'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 3,
+    availableRooms: 3
   },
 
   // Sa Pa
@@ -242,7 +248,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Lò sưởi ấm cúng', 'Bồn tắm gỗ pơ-mu ngâm thảo dược', 'Ban công săn mây tầng cao', 'Sưởi sàn ấm áp mùa đông'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 12,
+    availableRooms: 12
   },
   {
     id: 'room-sp-2',
@@ -259,7 +267,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Phòng khách panoramic 270 độ', 'Hệ thống sưởi thông minh', 'Rượu vang hâm nóng buổi tối', 'Bữa sáng thượng hạng tại phòng'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
   },
 
   // Hội An
@@ -278,7 +288,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Nội thất gỗ chạm khắc thủ công', 'Ban công ngắm đèn lồng phố cổ', 'Bộ ấm trà gốm Thanh Hà', 'Bồn tắm đá nguyên khối'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 10,
+    availableRooms: 10
   },
   {
     id: 'room-ha-2',
@@ -295,7 +307,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Hồ bơi riêng rợp bóng dừa', 'Trải nghiệm trà chiều cung đình', 'Vé xem Ký ức Hội An VIP', 'Xe xích lô đưa đón phố cổ'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 4,
+    availableRooms: 4
   },
 
   // Phú Quốc
@@ -314,7 +328,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Lối đi thẳng ra bãi biển cát trắng', 'Bồn tắm lộ thiên ngắm hoàng hôn', 'Cocktail chào đón độc quyền', 'Bộ mỹ phẩm hữu cơ chiết xuất dừa'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 14,
+    availableRooms: 14
   },
   {
     id: 'room-pq-2',
@@ -331,7 +347,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Hồ bơi vô cực sát bờ sóng', 'Tiệc nướng BBQ hải sản tại villa', 'Đầu bếp phục vụ riêng', 'Thuyền kayak đôi miễn phí'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 5,
+    availableRooms: 5
   },
 
   // Ninh Bình
@@ -350,7 +368,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Hiên ngắm cảnh sen nở', 'Nội thất đá khối & gỗ lũa', 'Trà sen ủ sương sớm', 'Xe đạp dạo đồng lúa Tam Cốc'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 10,
+    availableRooms: 10
   },
 
   // Đà Lạt
@@ -369,7 +389,9 @@ export const initialRooms = [
       'https://images.unsplash.com/photo-1470246973918-29a93221c455?q=80&w=800&auto=format&fit=crop'
     ],
     amenities: ['Lò sưởi hơi nước ấm áp', 'Cửa sổ kính sát trần ngắm rừng thông', 'Trà Atiso tươi tại phòng', 'Bộ máy hát đĩa vinyl cổ điển'],
-    isAvailable: true
+    isAvailable: true,
+    totalRooms: 8,
+    availableRooms: 8
   }
 ];
 

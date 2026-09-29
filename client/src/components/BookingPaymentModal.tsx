@@ -135,6 +135,7 @@ export const BookingPaymentModal: React.FC<BookingPaymentModalProps> = ({
         customerName,
         customerEmail,
         customerPhone,
+        userId: currentUser?.id,
         hotelId: hotel.id,
         roomId: room.id,
         checkInDate,

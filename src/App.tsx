@@ -13,13 +13,14 @@ import { AuthModal } from '../client/src/components/AuthModal.tsx';
 import { HomePage } from '../client/src/pages/HomePage.tsx';
 import { ArticlesPage } from '../client/src/pages/ArticlesPage.tsx';
 import { AccountPage } from '../client/src/pages/AccountPage.tsx';
+import { AdminPage } from '../client/src/pages/AdminPage.tsx';
 import { Footer } from '../client/src/components/Footer.tsx';
 import { Hotel, Room, Booking, Promotion, TourismSpot, LoyaltyUser, Article } from '../client/src/types/index.ts';
 import { api } from '../client/src/services/api.ts';
 import { MessageSquare, ArrowUp } from 'lucide-react';
 
 export function App() {
-  // Navigation & Page State ('home' | 'hotels' | 'articles' | 'map' | 'reviews' | 'loyalty' | 'account')
+  // Navigation & Page State ('home' | 'hotels' | 'articles' | 'map' | 'reviews' | 'loyalty' | 'account' | 'admin')
   const [activePage, setActivePage] = useState<string>('home');
 
   // Core Data state
@@ -179,8 +180,9 @@ export function App() {
 
   // Mark notification read in user state
   const handleMarkNotificationRead = async (notifId: string) => {
+    if (!currentUser?.id) return;
     try {
-      const updatedUser = await api.markNotificationRead(notifId);
+      const updatedUser = await api.markNotificationRead(notifId, currentUser.id);
       setCurrentUser(updatedUser);
       localStorage.setItem('aura_user', JSON.stringify(updatedUser));
     } catch (err) {
@@ -190,9 +192,10 @@ export function App() {
 
   // Handle successful booking
   const handleBookingSuccess = async (booking: Booking) => {
+    if (!currentUser?.id) return;
     // Refresh loyalty points and user notifications
     try {
-      const updatedUser = await api.getLoyaltyProfile();
+      const updatedUser = await api.getLoyaltyProfile(currentUser.id);
       setCurrentUser(updatedUser);
       localStorage.setItem('aura_user', JSON.stringify(updatedUser));
     } catch (err) {
@@ -325,6 +328,14 @@ export function App() {
             onOpenAuth={handleOpenAuth}
             onLogout={handleLogout}
             onNavigateToHotels={() => handleNavigate('hotels')}
+          />
+        )}
+
+        {/* PAGE 8: ADMIN DASHBOARD */}
+        {activePage === 'admin' && (
+          <AdminPage
+            currentUser={currentUser}
+            onNavigate={handleNavigate}
           />
         )}
 

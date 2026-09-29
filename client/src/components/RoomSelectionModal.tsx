@@ -67,8 +67,10 @@ export const RoomSelectionModal: React.FC<RoomSelectionModalProps> = ({
                       <h3 className="font-serif text-lg sm:text-xl font-bold text-stone-100">
                         {room.name}
                       </h3>
-                      <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded-full">
-                        Còn phòng trống
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${(room.availableRooms ?? (room.isAvailable ? room.totalRooms ?? 1 : 0)) > 0 ? 'text-emerald-400 bg-emerald-950/60 border border-emerald-800/60' : 'text-red-300 bg-red-950/60 border border-red-800/60'}`}>
+                        {(room.availableRooms ?? (room.isAvailable ? room.totalRooms ?? 1 : 0)) > 0
+                          ? `Còn ${room.availableRooms ?? room.totalRooms ?? 1} phòng`
+                          : 'Hết phòng'}
                       </span>
                     </div>
 
@@ -112,10 +114,11 @@ export const RoomSelectionModal: React.FC<RoomSelectionModalProps> = ({
 
                     <button
                       onClick={() => onSelectRoom(room)}
-                      className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                      disabled={(room.availableRooms ?? (room.isAvailable ? room.totalRooms ?? 1 : 0)) < 1}
+                      className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
                       id={`select-room-${room.id}`}
                     >
-                      <span>Chọn phòng & Đặt ngay</span>
+                      <span>{(room.availableRooms ?? (room.isAvailable ? room.totalRooms ?? 1 : 0)) > 0 ? 'Chọn phòng & Đặt ngay' : 'Tạm hết phòng'}</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>

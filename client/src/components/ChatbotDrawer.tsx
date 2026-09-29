@@ -4,18 +4,14 @@ import {
   Send,
   Bot,
   Sparkles,
-  Compass,
-  CreditCard,
-  Tag,
-  BedDouble,
   Loader2,
-  MessageSquare,
-  ChevronDown,
   Settings,
   Key,
   CheckCircle2,
   AlertCircle,
-  Sliders
+  Sliders,
+  RotateCcw,
+  ExternalLink
 } from 'lucide-react';
 import { api } from '../services/api.ts';
 
@@ -30,6 +26,7 @@ interface ChatMessage {
   sender: 'user' | 'model';
   text: string;
   time: string;
+  source?: string;
 }
 
 interface SuggestionCategory {
@@ -45,6 +42,75 @@ interface AIConfig {
   status: string;
 }
 
+// Helper to render basic Markdown formatting nicely in Chat
+function renderFormattedMessage(text: string) {
+  if (!text) return null;
+
+  // Split into lines
+  const lines = text.split('\n');
+
+  return (
+    <div className="space-y-1.5 leading-relaxed">
+      {lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed) return <div key={lineIdx} className="h-1" />;
+
+        // Header 3 or bold title line (### or ##)
+        if (trimmed.startsWith('###') || trimmed.startsWith('##')) {
+          const headerText = trimmed.replace(/^#+\s*/, '');
+          return (
+            <h4 key={lineIdx} className="font-semibold text-amber-300 text-xs mt-2 mb-1 flex items-center gap-1">
+              <span>✨</span> {headerText}
+            </h4>
+          );
+        }
+
+        // Bullet point lines (• or - or *)
+        const isBullet = trimmed.startsWith('•') || trimmed.startsWith('- ') || trimmed.startsWith('* ');
+        const contentText = isBullet ? trimmed.replace(/^[•\-\*]\s*/, '') : trimmed;
+
+        // Parse bold **text** or inline code `code`
+        const parts = parseInlineMarkdown(contentText);
+
+        if (isBullet) {
+          return (
+            <div key={lineIdx} className="flex items-start gap-1.5 pl-1 my-0.5 text-stone-200">
+              <span className="text-amber-400 text-[10px] mt-0.5 font-bold">•</span>
+              <div className="flex-1">{parts}</div>
+            </div>
+          );
+        }
+
+        return <p key={lineIdx} className="my-0.5">{parts}</p>;
+      })}
+    </div>
+  );
+}
+
+// Inline parser for **bold** and `code`
+function parseInlineMarkdown(text: string) {
+  const regex = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+  const parts = text.split(regex);
+
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="font-semibold text-amber-300">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return (
+        <code key={i} className="bg-amber-950/60 text-amber-200 font-mono text-[10px] px-1.5 py-0.5 rounded border border-amber-800/40">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+}
+
 export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
   isOpen,
   onClose,
@@ -54,7 +120,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
     {
       id: 'welcome-1',
       sender: 'model',
-      text: 'Kính chào quý khách! Em là **Aura Concierge** — Trợ lý du lịch và chăm sóc khách hàng 24/7 của chuỗi AuraResort Vietnam.\n\nEm luôn sẵn sàng hỗ trợ quý khách:\n• Tư vấn lựa chọn chi nhánh nghỉ dưỡng lý tưởng.\n• Hướng dẫn đặt phòng & thanh toán trực tuyến (VNPAY, MoMo, VietQR, Thẻ quốc tế).\n• Gợi ý các danh thắng và trải nghiệm văn hóa địa phương đặc sắc.\n• Tra cứu mã ưu đãi hội viên Aura Loyalty Club.\n\nQuý khách muốn lên kế hoạch cho kỳ nghỉ sắp tới như thế nào ạ?',
+      text: 'Kính chào quý khách! Em là **Aura Concierge** — Trợ lý du lịch và chăm sóc khách hàng 24/7 của chuỗi AuraResort Vietnam.\n\nEm luôn sẵn sàng hỗ trợ quý khách:\n• Tư vấn lựa chọn 6 chi nhánh nghỉ dưỡng cao cấp.\n• Hướng dẫn đặt phòng & thanh toán trực tuyến (VNPAY, MoMo, VietQR, Thẻ quốc tế).\n• Gợi ý danh thắng & trải nghiệm văn hóa địa phương đặc sắc.\n• Tra cứu mã ưu đãi hội viên Aura Loyalty Club.\n\nQuý khách muốn lên kế hoạch cho kỳ nghỉ sắp tới như thế nào ạ?',
       time: 'Vừa xong'
     }
   ]);
@@ -73,6 +139,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
   const [isRecommending, setIsRecommending] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastHandledTopicRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -82,16 +149,17 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (initialTopic) {
+    if (isOpen && initialTopic && initialTopic !== lastHandledTopicRef.current) {
+      lastHandledTopicRef.current = initialTopic;
       handleSendMessage(initialTopic);
     }
-  }, [initialTopic]);
+  }, [isOpen, initialTopic]);
 
   useEffect(() => {
     if (isOpen) {
       scrollToBottom();
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isLoading]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -130,22 +198,31 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
     };
 
     setMessages(prev => [...prev, userMsg]);
-    setInputText('');
+    if (!textToSend) setInputText('');
     setIsLoading(true);
 
     try {
-      const history = messages.slice(-6).map(m => ({
-        sender: m.sender,
-        text: m.text
-      }));
+      // Build history for api context
+      const history = messages
+        .filter(m => m.id !== 'welcome-1')
+        .slice(-6)
+        .map(m => ({
+          sender: m.sender,
+          text: m.text
+        }));
 
       const res = await api.sendChatMessage(text.trim(), history);
+
+      // res is json.data from sendChatMessage
+      const replyText = res?.reply || (res as any)?.data?.reply || 'Dạ, em đã ghi nhận thông tin. Quý khách cần hỗ trợ thêm gì không ạ?';
+      const source = res?.source || (res as any)?.data?.source || 'ai';
 
       const botMsg: ChatMessage = {
         id: 'bot-' + Date.now(),
         sender: 'model',
-        text: res.data?.reply || 'Dạ, em đã ghi nhận thông tin và đang xử lý.',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        text: replyText,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        source
       };
 
       setMessages(prev => [...prev, botMsg]);
@@ -166,9 +243,9 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
     if (!apiKeyInput.trim()) return;
     try {
       const res = await api.updateChatbotConfig(apiKeyInput.trim());
-      setConfigMessage({ type: 'success', text: res.message || 'Cập nhật API Key thành công!' });
+      setConfigMessage({ type: 'success', text: res.message || 'Cập nhật API Key Gemini thành công!' });
       setApiKeyInput('');
-      loadConfig();
+      await loadConfig();
       setTimeout(() => setConfigMessage(null), 3000);
     } catch (err: any) {
       setConfigMessage({ type: 'error', text: err.message || 'Lỗi cập nhật API Key' });
@@ -205,7 +282,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
             `**${idx + 1}. ${r.hotelName} (${r.city})**\n` +
             `• **Hạng phòng:** ${r.room.name}\n` +
             `• **Giá từ:** ${r.room.pricePerNight.toLocaleString('vi-VN')} VNĐ/đêm\n` +
-            `• **Sức chứa:** ${r.room.capacity} khách | ${r.room.size}\n` +
+            `• **Sức chứa:** ${r.room.capacity} khách | ${r.room.areaSqm || 45}m²\n` +
             `• **Tiện ích:** ${r.room.amenities.slice(0, 3).join(', ')}`
           ).join('\n\n');
       }
@@ -213,7 +290,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
       const botMsg: ChatMessage = {
         id: 'bot-' + Date.now(),
         sender: 'model',
-        text: responseText || 'Dạ không tìm thấy phòng phù hợp ngân sách, quý khách thử chọn mức ngân sách khác xem sao nhé!',
+        text: responseText || 'Dạ không tìm thấy phòng phù hợp với ngân sách trên. Quý khách thử điều chỉnh mức ngân sách khác xem sao nhé!',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
 
@@ -224,6 +301,17 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
       setIsLoading(false);
       setIsRecommending(false);
     }
+  };
+
+  const handleResetChat = () => {
+    setMessages([
+      {
+        id: 'welcome-1',
+        sender: 'model',
+        text: 'Kính chào quý khách! Em là **Aura Concierge** — Trợ lý du lịch và chăm sóc khách hàng 24/7 của chuỗi AuraResort Vietnam.\n\nEm luôn sẵn sàng hỗ trợ quý khách:\n• Tư vấn lựa chọn 6 chi nhánh nghỉ dưỡng cao cấp.\n• Hướng dẫn đặt phòng & thanh toán trực tuyến (VNPAY, MoMo, VietQR, Thẻ quốc tế).\n• Gợi ý danh thắng & trải nghiệm văn hóa địa phương đặc sắc.\n• Tra cứu mã ưu đãi hội viên Aura Loyalty Club.\n\nQuý khách muốn lên kế hoạch cho kỳ nghỉ sắp tới như thế nào ạ?',
+        time: 'Vừa xong'
+      }
+    ]);
   };
 
   const defaultPrompts = [
@@ -247,7 +335,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-stone-950 font-bold shadow-md shadow-amber-500/20">
               <Bot className="w-5 h-5 text-stone-950" />
             </div>
-            <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full ring-2 ring-stone-950 ${configStatus?.configured ? 'bg-emerald-500' : 'bg-amber-400'}`} />
+            <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full ring-2 ring-stone-950 ${configStatus?.configured ? 'bg-emerald-500' : 'bg-amber-400 animate-pulse'}`} />
           </div>
           <div>
             <h3 className="font-serif font-bold text-sm text-stone-100 flex items-center gap-1.5">
@@ -256,17 +344,24 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
                   ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
                   : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
                 }`}>
-                {configStatus?.configured ? 'Gemini 2.5 Active' : 'Offline Mode'}
+                {configStatus?.configured ? 'Gemini 2.0 Active' : 'Offline Rule Engine'}
               </span>
             </h3>
-            <p className="text-[11px] text-stone-400">Trợ lý du lịch & Nghỉ dưỡng thông minh</p>
+            <p className="text-[11px] text-stone-400">Trợ lý du lịch & Nghỉ dưỡng thông minh 24/7</p>
           </div>
         </div>
 
         <div className="flex items-center gap-1">
           <button
+            onClick={handleResetChat}
+            title="Làm mới trò chuyện"
+            className="p-2 rounded-xl text-stone-400 hover:text-amber-400 hover:bg-stone-800 transition-colors cursor-pointer"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+          <button
             onClick={() => setShowRecommendModal(!showRecommendModal)}
-            title="Tư vấn phòng theo ngân sách (API)"
+            title="Tư vấn phòng tự động theo ngân sách"
             className="p-2 rounded-xl text-stone-400 hover:text-amber-400 hover:bg-stone-800 transition-colors cursor-pointer"
           >
             <Sliders className="w-4 h-4" />
@@ -292,26 +387,26 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
         <div className="p-4 bg-stone-950 border-b border-stone-800 text-xs space-y-3 animate-fadeIn">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold text-amber-400 flex items-center gap-1.5">
-              <Key className="w-4 h-4" /> Cấu hình Gemini API Key (Backend API)
+              <Key className="w-4 h-4" /> Cấu hình Gemini API Key
             </h4>
             <button onClick={() => setShowConfigModal(false)} className="text-stone-400 hover:text-stone-200">
               <X className="w-4 h-4" />
             </button>
           </div>
           <p className="text-[11px] text-stone-400">
-            Trạng thái hiện tại: <span className="font-mono text-stone-200">{configStatus?.configured ? '✅ Đã cấu hình GEMINI_API_KEY' : '⚠️ Đang chạy chế độ quy tắc nội bộ (Offline Rule Mode)'}</span>
+            Trạng thái hiện tại: <span className="font-mono text-stone-200 font-semibold">{configStatus?.configured ? '✅ Đã kích hoạt Google Gemini 2.0 AI' : '⚡ Đang chạy Chế độ Quy tắc Nội bộ Thông minh (Offline Concierge)'}</span>
           </p>
           <div className="flex gap-2">
             <input
               type="password"
-              placeholder="Nhập GEMINI_API_KEY mới..."
+              placeholder="Nhập GEMINI_API_KEY từ Google AI Studio..."
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
-              className="flex-1 bg-stone-900 border border-stone-800 focus:border-amber-500 rounded-xl px-3 py-2 text-stone-100 text-xs focus:outline-none"
+              className="flex-1 bg-stone-900 border border-stone-800 focus:border-amber-500 rounded-xl px-3 py-2 text-stone-100 text-xs focus:outline-none placeholder-stone-600"
             />
             <button
               onClick={handleSaveApiKey}
-              className="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
+              className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap shadow-sm"
             >
               Lưu Key
             </button>
@@ -331,7 +426,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
         <div className="p-4 bg-stone-950 border-b border-stone-800 text-xs space-y-3 animate-fadeIn">
           <div className="flex items-center justify-between">
             <h4 className="font-semibold text-amber-400 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" /> AI Recommendation Engine (Tư vấn tự động)
+              <Sparkles className="w-4 h-4" /> AI Recommendation Engine (Tư vấn phòng)
             </h4>
             <button onClick={() => setShowRecommendModal(false)} className="text-stone-400 hover:text-stone-200">
               <X className="w-4 h-4" />
@@ -383,7 +478,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
             className="w-full py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
           >
             {isRecommending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-            <span>Tìm phòng tối ưu qua API Recommend</span>
+            <span>Tìm phòng tối ưu qua AI Recommend Engine</span>
           </button>
         </div>
       )}
@@ -414,20 +509,27 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
             className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
           >
             <div
-              className={`max-w-[85%] p-3.5 rounded-2xl leading-relaxed ${m.sender === 'user'
+              className={`max-w-[88%] p-3.5 rounded-2xl ${m.sender === 'user'
                   ? 'bg-amber-600 text-white rounded-br-none shadow-md'
-                  : 'bg-stone-950 text-stone-200 border border-stone-800 rounded-bl-none shadow-sm whitespace-pre-line'
+                  : 'bg-stone-950 text-stone-200 border border-stone-800 rounded-bl-none shadow-sm'
                 }`}
             >
-              {m.text}
+              {m.sender === 'model' ? renderFormattedMessage(m.text) : m.text}
             </div>
-            <span className="text-[10px] text-stone-500 mt-1 px-1">{m.time}</span>
+            <div className="flex items-center gap-1.5 text-[10px] text-stone-500 mt-1 px-1">
+              <span>{m.time}</span>
+              {m.source && (
+                <span className="text-[9px] px-1 py-0.2 rounded bg-stone-800 text-stone-400 font-mono">
+                  {m.source === 'gemini' ? 'Gemini 2.0' : 'Aura Concierge'}
+                </span>
+              )}
+            </div>
           </div>
         ))}
 
         {isLoading && (
-          <div className="flex items-center gap-2 text-xs text-amber-400 bg-stone-950 p-3 rounded-2xl border border-stone-800 w-fit">
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <div className="flex items-center gap-2 text-xs text-amber-400 bg-stone-950 p-3 rounded-2xl border border-stone-800 w-fit animate-pulse">
+            <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
             <span>Aura Concierge đang soạn câu trả lời...</span>
           </div>
         )}
@@ -441,7 +543,8 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
           <button
             key={idx}
             onClick={() => handleSendMessage(prompt)}
-            className="text-[11px] bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-amber-300 px-3 py-1.5 rounded-full whitespace-nowrap transition-colors cursor-pointer border border-stone-700/60"
+            disabled={isLoading}
+            className="text-[11px] bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-amber-300 px-3 py-1.5 rounded-full whitespace-nowrap transition-colors cursor-pointer border border-stone-700/60 disabled:opacity-50"
           >
             {prompt}
           </button>
@@ -464,7 +567,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
           disabled={!inputText.trim() || isLoading}
           className="p-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-stone-950 rounded-xl transition-all cursor-pointer font-bold shadow-md shadow-amber-500/20"
         >
-          <Send className="w-4 h-4" />
+          <Send className="w-4 h-4 text-stone-950" />
         </button>
       </div>
 

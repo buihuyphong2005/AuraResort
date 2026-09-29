@@ -14,10 +14,15 @@ export const BookingController = {
     }
   },
 
-  async getBookingsByEmail(req, res) {
+  async getBookings(req, res) {
     try {
-      const email = req.query.email || 'haidang.resort@gmail.com';
-      const bookings = await BookingService.getBookingsByEmail(email);
+      const email = req.query.email;
+      let bookings;
+      if (email) {
+        bookings = await BookingService.getBookingsByEmail(email);
+      } else {
+        bookings = await BookingService.getAllBookings();
+      }
       res.json({ success: true, data: bookings });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });

@@ -3,7 +3,7 @@ import { Hotel, Room, Booking, Review, Promotion, TourismSpot, LoyaltyUser, Arti
 const API_BASE = '/api';
 
 export const api = {
-  // Authentication
+  
   async register(payload: { name: string; email: string; password: string; phone?: string }) {
     const res = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
@@ -32,6 +32,13 @@ export const api = {
     const json = await res.json();
     if (!json.success) throw new Error(json.error);
     return json.data;
+  },
+
+  async getAllUsers(): Promise<LoyaltyUser[]> {
+    const res = await fetch(`${API_BASE}/auth/users`);
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error);
+    return json.data || [];
   },
 
   // Articles & Travel Guides
@@ -75,6 +82,23 @@ export const api = {
     const res = await fetch(url);
     const json = await res.json();
     return json.data || [];
+  },
+
+  async getAllRooms(): Promise<Room[]> {
+    const res = await fetch(`${API_BASE}/hotels/rooms/all`);
+    const json = await res.json();
+    return json.data || [];
+  },
+
+  async updateRoomStock(roomId: string, totalRooms: number): Promise<Room> {
+    const res = await fetch(`${API_BASE}/hotels/rooms/${roomId}/stock`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ totalRooms })
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    return json.data;
   },
 
   // Bookings
@@ -151,7 +175,7 @@ export const api = {
 
   // Loyalty & Promotions
   async getLoyaltyProfile(userId?: string): Promise<LoyaltyUser> {
-    const url = userId ? `${API_BASE}/loyalty/profile?userId=${userId}` : `${API_BASE}/loyalty/profile`;
+    const url = userId ? `${API_BASE}/loyalty/profile?userId=${encodeURIComponent(userId)}` : `${API_BASE}/loyalty/profile`;
     const res = await fetch(url);
     const json = await res.json();
     return json.data;
@@ -170,8 +194,8 @@ export const api = {
     return json.data;
   },
 
-  async markNotificationRead(notifId: string): Promise<LoyaltyUser> {
-    const res = await fetch(`${API_BASE}/loyalty/notifications/${notifId}/read`, { method: 'PATCH' });
+  async markNotificationRead(notifId: string, userId: string): Promise<LoyaltyUser> {
+    const res = await fetch(`${API_BASE}/loyalty/notifications/${encodeURIComponent(notifId)}/read?userId=${encodeURIComponent(userId)}`, { method: 'PATCH' });
     const json = await res.json();
     return json.data;
   },
