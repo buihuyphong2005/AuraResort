@@ -114,5 +114,17 @@ export const BookingService = {
       throw new Error('Không tìm thấy đơn đặt phòng với mã: ' + code);
     }
     return booking;
+  },
+
+  async updateBookingStatus(id, status) {
+    const allowed = ['confirmed', 'completed', 'cancelled'];
+    if (!allowed.includes(status)) {
+      throw new Error('Trạng thái không hợp lệ: ' + status);
+    }
+    const updated = await BookingModel.updateStatus(id, status);
+    if (!updated) {
+      throw new Error('Không tìm thấy đơn đặt phòng cần cập nhật');
+    }
+    return updated;
   }
 };

@@ -19,8 +19,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   
   // Login fields
-  const [loginEmail, setLoginEmail] = useState('haidang.resort@gmail.com');
-  const [loginPassword, setLoginPassword] = useState('Password123@');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   // Register fields
   const [regName, setRegName] = useState('');
@@ -215,9 +215,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             </div>
 
-            <p className="text-[11px] text-stone-500 text-center pt-2">
-              Tài khoản mẫu: <span className="text-stone-300">haidang.resort@gmail.com</span> / <span className="text-stone-300">Password123@</span>
-            </p>
           </form>
         )}
 

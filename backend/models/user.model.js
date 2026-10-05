@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { initialLoyaltyUser } from '../data/seedData.js';
+import { initialAdminUser, initialAdditionalUsers, initialLoyaltyUser } from '../data/seedData.js';
 
 const UserSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
@@ -29,27 +29,13 @@ export const MongooseUser = mongoose.models.User || mongoose.model('User', UserS
 
 // Initial list of registered users
 let memoryUsers = [
-  {
-    id: 'user-admin',
-    name: 'Quản Trị Viên AuraResort',
-    email: 'admin@auraresort.vn',
-    password: 'Admin123@',
-    phone: '0901234567',
-    role: 'admin',
-    tier: 'Diamond',
-    points: 99999,
-    pointsToNextTier: 0,
-    nextTier: 'Royalty Elite',
-    memberSince: '2024-01-01',
-    totalBookings: 0,
-    benefits: ['Quyền quản trị toàn hệ thống AuraResort'],
-    notifications: []
-  },
+  initialAdminUser,
   {
     ...initialLoyaltyUser,
     role: 'user',
-    password: 'Password123@' // Demo password
-  }
+    password: 'Password123@'
+  },
+  ...initialAdditionalUsers
 ];
 
 export const UserModel = {
@@ -121,7 +107,7 @@ export const UserModel = {
   },
 
   async getProfile(userId) {
-    if (!userId) return memoryUsers.find(user => user.role !== 'admin') || null;
+    if (!userId) return null; // Require explicit userId - never return a random user
     if (mongoose.connection.readyState === 1) {
       try {
         const user = await MongooseUser.findOne({ id: userId });
@@ -217,12 +203,12 @@ export const UserModel = {
   async getAll() {
     if (mongoose.connection.readyState === 1) {
       try {
-        const users = await MongooseUser.find({});
+        const users = await MongooseUser.find({ role: 'user' });
         if (users && users.length > 0) return users;
       } catch (e) {
         console.warn('Fallback to memory getAll users:', e.message);
       }
     }
-    return memoryUsers;
+    return memoryUsers.filter(user => user.role === 'user');
   }
 };

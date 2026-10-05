@@ -6,5 +6,6 @@ const router = express.Router();
 router.post('/', BookingController.createBooking);
 router.get('/', BookingController.getBookings);
 router.get('/code/:code', BookingController.getBookingByCode);
+router.patch('/:id/status', BookingController.updateBookingStatus);
 
 export default router;

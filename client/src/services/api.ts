@@ -127,6 +127,17 @@ export const api = {
     return json.data;
   },
 
+  async updateBookingStatus(id: string, status: 'confirmed' | 'completed' | 'cancelled'): Promise<Booking> {
+    const res = await fetch(`${API_BASE}/bookings/${encodeURIComponent(id)}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    return json.data;
+  },
+
   // Payments (Bank only: VietQR & Bank Card)
   async createPaymentIntent(payload: { amount: number; method: string; bookingCode: string; hotelName: string }) {
     const res = await fetch(`${API_BASE}/payments/intent`, {

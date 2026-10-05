@@ -36,5 +36,16 @@ export const BookingController = {
     } catch (err) {
       res.status(404).json({ success: false, message: err.message });
     }
+  },
+
+  async updateBookingStatus(req, res) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const updated = await BookingService.updateBookingStatus(id, status);
+      res.json({ success: true, message: 'Cập nhật trạng thái đơn thành công', data: updated });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err.message });
+    }
   }
 };

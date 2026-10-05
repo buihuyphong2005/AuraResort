@@ -53,14 +53,14 @@ async function startServer() {
   const hasRootDist = fs.existsSync(path.join(rootDistPath, 'index.html'));
 
   if (hasClientDist) {
-    console.log(`📦 Serving frontend from client/dist: ${clientDistPath}`);
+    console.log(` Serving frontend from client/dist: ${clientDistPath}`);
     app.use(express.static(clientDistPath));
     app.get('*', (req, res, next) => {
       if (req.path.startsWith('/api')) return next();
       res.sendFile(path.join(clientDistPath, 'index.html'));
     });
   } else if (hasRootDist) {
-    console.log(`📦 Serving frontend from dist: ${rootDistPath}`);
+    console.log(` Serving frontend from dist: ${rootDistPath}`);
     app.use(express.static(rootDistPath));
     app.get('*', (req, res, next) => {
       if (req.path.startsWith('/api')) return next();
@@ -68,7 +68,7 @@ async function startServer() {
     });
   } else {
     // In dev mode when client/dist has not been built yet, mount Vite middleware
-    console.log('⚡ Starting Vite middleware in development mode...');
+    console.log(' Starting Vite middleware in development mode...');
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -78,7 +78,7 @@ async function startServer() {
   }
 
   app.listen(PORT, HOST, () => {
-    console.log(`🚀 AuraResort Full-Stack App running at http://${HOST}:${PORT}`);
+    console.log(` AuraResort Full-Stack App running at http://${HOST}:${PORT}`);
   });
 }
 

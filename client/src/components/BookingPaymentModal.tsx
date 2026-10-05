@@ -47,21 +47,17 @@ export const BookingPaymentModal: React.FC<BookingPaymentModalProps> = ({
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   // Form State
-  const [customerName, setCustomerName] = useState(currentUser?.name || 'Nguyễn Hải Đăng');
-  const [customerEmail, setCustomerEmail] = useState(currentUser?.email || 'haidang.resort@gmail.com');
-  const [customerPhone, setCustomerPhone] = useState(currentUser?.phone || '0988 123 456');
+  const [customerName, setCustomerName] = useState(currentUser?.name || '');
+  const [customerEmail, setCustomerEmail] = useState(currentUser?.email || '');
+  const [customerPhone, setCustomerPhone] = useState(currentUser?.phone || '');
   const [checkInDate, setCheckInDate] = useState(initialCheckIn);
   const [checkOutDate, setCheckOutDate] = useState(initialCheckOut);
   const [guests, setGuests] = useState(initialGuests || 2);
-  const [specialRequests, setSpecialRequests] = useState('Phòng tầng cao, view thoáng đãng và giường đôi êm ái.');
+  const [specialRequests, setSpecialRequests] = useState('');
 
   // Voucher State
-  const [voucherCode, setVoucherCode] = useState('AURA15');
-  const [appliedVoucher, setAppliedVoucher] = useState<{ code: string; discountPercent: number; title: string } | null>({
-    code: 'AURA15',
-    discountPercent: 15,
-    title: 'Ưu đãi chào hè 15%'
-  });
+  const [voucherCode, setVoucherCode] = useState('');
+  const [appliedVoucher, setAppliedVoucher] = useState<{ code: string; discountPercent: number; title: string } | null>(null);
   const [voucherError, setVoucherError] = useState('');
   const [isValidatingVoucher, setIsValidatingVoucher] = useState(false);
 
@@ -69,11 +65,11 @@ export const BookingPaymentModal: React.FC<BookingPaymentModalProps> = ({
   const [paymentMethod, setPaymentMethod] = useState<'bank_transfer' | 'bank_card'>('bank_transfer');
   
   // Bank Card Form
-  const [cardNumber, setCardNumber] = useState('9704 2200 8899 6688');
-  const [cardHolder, setCardHolder] = useState('NGUYEN HAI DANG');
-  const [cardBankName, setCardBankName] = useState('Vietcombank');
-  const [cardExpiry, setCardExpiry] = useState('12/28');
-  const [cardCvv, setCardCvv] = useState('888');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardHolder, setCardHolder] = useState('');
+  const [cardBankName, setCardBankName] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
 
   // Copy toast
   const [copiedField, setCopiedField] = useState<string | null>(null);

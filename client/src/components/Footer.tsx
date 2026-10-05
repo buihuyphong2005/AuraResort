@@ -1,7 +1,11 @@
 import React from 'react';
 import { Compass, Phone, Mail, MapPin, ShieldCheck, CreditCard, Sparkles } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate?: (page: string) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer className="bg-stone-950 text-stone-400 text-xs border-t border-stone-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -84,10 +88,19 @@ export const Footer: React.FC = () => {
         {/* Bottom copyright */}
         <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-500">
           <p>© {new Date().getFullYear()} AuraResort Hospitality Group. Bản quyền thuộc về AuraResort Việt Nam.</p>
-          <div className="flex items-center gap-6 text-[11px]">
+          <div className="flex flex-wrap items-center gap-6 text-[11px]">
             <span className="hover:text-stone-400 cursor-pointer">Điều khoản dịch vụ</span>
             <span className="hover:text-stone-400 cursor-pointer">Chính sách bảo mật</span>
             <span className="hover:text-stone-400 cursor-pointer">Quy định nhận trả phòng</span>
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('admin')}
+                className="text-amber-400/80 hover:text-amber-400 cursor-pointer flex items-center gap-1 font-semibold"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Cổng Quản Trị Hệ Thống</span>
+              </button>
+            )}
           </div>
         </div>
 

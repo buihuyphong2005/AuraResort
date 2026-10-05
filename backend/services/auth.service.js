@@ -1,5 +1,11 @@
 import { UserModel } from '../models/user.model.js';
 
+const toSafeUser = user => {
+  const data = user?._doc || user;
+  const { password: ignoredPassword, ...safeUser } = data;
+  return safeUser;
+};
+
 export const AuthService = {
   async register(data) {
     const { name, email, password, phone } = data;
@@ -20,15 +26,14 @@ export const AuthService = {
     const user = await UserModel.create({
       name,
       email: email.trim().toLowerCase(),
-      password, // In demo environment stored simply, or hashed
+      password,
       phone: phone || ''
     });
 
     const token = 'token-' + user.id + '-' + Date.now();
 
-    const { password: _, ...safeUser } = user;
     return {
-      user: safeUser,
+      user: toSafeUser(user),
       token
     };
   },
@@ -49,9 +54,8 @@ export const AuthService = {
 
     const token = 'token-' + user.id + '-' + Date.now();
 
-    const { password: _, ...safeUser } = user;
     return {
-      user: safeUser,
+      user: toSafeUser(user),
       token
     };
   },
@@ -61,8 +65,7 @@ export const AuthService = {
     if (!user) {
       throw new Error('Không tìm thấy tài khoản người dùng');
     }
-    const { password: _, ...safeUser } = user;
-    return safeUser;
+    return toSafeUser(user);
   },
 
   async getAllUsers() {

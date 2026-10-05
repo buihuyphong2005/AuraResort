@@ -169,6 +169,48 @@ export const initialHotels = [
     ],
     phone: '+84 (0) 229 361 5555',
     email: 'ninhbinh@auraresort.vn'
+  },
+  {
+    id: 'hotel-halong',
+    name: 'Aura Ha Long Heritage Bay',
+    branchCode: 'AURA-HL',
+    city: 'Hạ Long',
+    address: 'Đường Hạ Long, Phường Bãi Cháy, Thành phố Hạ Long, Quảng Ninh',
+    tagline: 'Thức giấc giữa kỳ quan vịnh biển nghìn năm',
+    rating: 4.9,
+    reviewCount: 186,
+    coordinates: { lat: 20.9569, lng: 107.0448 },
+    coverImage: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1200&auto=format&fit=crop',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop'
+    ],
+    priceStarting: 2750000,
+    description: 'Khu nghỉ dưỡng bên bờ vịnh Hạ Long với tầm nhìn ra những đảo đá vôi, du thuyền tham quan di sản và không gian thư giãn lấy cảm hứng từ văn hóa biển Đông Bắc.',
+    amenities: ['Du thuyền tham quan vịnh', 'Hồ bơi ngoài trời', 'Nhà hàng hải sản địa phương', 'Spa thảo mộc', 'Đưa đón bến tàu'],
+    phone: '+84 (0) 203 388 6868',
+    email: 'halong@auraresort.vn'
+  },
+  {
+    id: 'hotel-hue',
+    name: 'Aura Hue Imperial Riverside',
+    branchCode: 'AURA-HUE',
+    city: 'Huế',
+    address: '05 Lê Lợi, Phường Vĩnh Ninh, Thành phố Huế, Thừa Thiên Huế',
+    tagline: 'Dấu xưa cố đô bên dòng Hương Giang',
+    rating: 4.86,
+    reviewCount: 143,
+    coordinates: { lat: 16.4637, lng: 107.5909 },
+    coverImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1000&auto=format&fit=crop'
+    ],
+    priceStarting: 1950000,
+    description: 'Khách sạn ven sông Hương kết hợp kiến trúc cung đình tinh giản với tiện nghi hiện đại, thuận tiện khám phá Đại Nội, lăng tẩm và ẩm thực cố đô.',
+    amenities: ['Du thuyền sông Hương', 'Trà chiều cung đình', 'Xe đạp tham quan thành phố', 'Nhà hàng món Huế', 'Dịch vụ đưa đón Đại Nội'],
+    phone: '+84 (0) 234 388 6868',
+    email: 'hue@auraresort.vn'
   }
 ];
 
@@ -392,6 +434,82 @@ export const initialRooms = [
     isAvailable: true,
     totalRooms: 8,
     availableRooms: 8
+  },
+  {
+    id: 'room-hl-1',
+    hotelId: 'hotel-halong',
+    name: 'Phòng Bay View Deluxe',
+    type: 'Deluxe',
+    pricePerNight: 2750000,
+    capacity: 2,
+    bedType: '1 Giường King',
+    areaSqm: 45,
+    view: 'Toàn cảnh vịnh Hạ Long',
+    images: [
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Ban công hướng vịnh', 'Bồn tắm nằm', 'Minibar', 'Bữa sáng buffet'],
+    isAvailable: true,
+    totalRooms: 16,
+    availableRooms: 15
+  },
+  {
+    id: 'room-hl-2',
+    hotelId: 'hotel-halong',
+    name: 'Du Thuyền Suite Hạ Long',
+    type: 'Suite',
+    pricePerNight: 4650000,
+    capacity: 3,
+    bedType: '1 Giường King và sofa bed',
+    areaSqm: 78,
+    view: 'Vịnh Hạ Long và bến du thuyền',
+    images: [
+      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Phòng khách riêng', 'Ban công rộng', 'Đón khách tại bến tàu', 'Minibar cao cấp'],
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
+  },
+  {
+    id: 'room-hue-1',
+    hotelId: 'hotel-hue',
+    name: 'Phòng Hương Giang Deluxe',
+    type: 'Deluxe',
+    pricePerNight: 1950000,
+    capacity: 2,
+    bedType: '1 Giường King',
+    areaSqm: 42,
+    view: 'Sông Hương và cầu Trường Tiền',
+    images: [
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Cửa sổ hướng sông', 'Trà cung đình', 'Bồn tắm nằm', 'Xe đạp miễn phí'],
+    isAvailable: true,
+    totalRooms: 18,
+    availableRooms: 18
+  },
+  {
+    id: 'room-hue-2',
+    hotelId: 'hotel-hue',
+    name: 'Imperial Garden Suite',
+    type: 'Suite',
+    pricePerNight: 3600000,
+    capacity: 3,
+    bedType: '1 Giường King và sofa bed',
+    areaSqm: 72,
+    view: 'Khu vườn nội khu và thành phố Huế',
+    images: [
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Phòng khách riêng', 'Bữa sáng cung đình', 'Bồn tắm đá', 'Quản gia theo yêu cầu'],
+    isAvailable: true,
+    totalRooms: 5,
+    availableRooms: 4
   }
 ];
 
@@ -693,11 +811,109 @@ export const initialReviews = [
     createdAt: '2026-09-02',
     verifiedBooking: true,
     likes: 31
+  },
+  {
+    id: 'rev-6',
+    hotelId: 'hotel-halong',
+    customerName: 'Phạm Quốc Bảo',
+    customerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+    rating: 5,
+    cleanRating: 5,
+    serviceRating: 5,
+    locationRating: 4.9,
+    comment: 'Phòng nhìn thẳng ra vịnh, nhân viên hỗ trợ lịch du thuyền rất chu đáo. Bữa sáng có nhiều món địa phương ngon.',
+    roomType: 'Phòng Bay View Deluxe',
+    createdAt: '2026-09-18',
+    verifiedBooking: true,
+    likes: 12
+  },
+  {
+    id: 'rev-7',
+    hotelId: 'hotel-hue',
+    customerName: 'Võ Ngọc Hà',
+    customerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+    rating: 5,
+    cleanRating: 5,
+    serviceRating: 4.9,
+    locationRating: 5,
+    comment: 'Vị trí bên sông rất đẹp, có thể đi bộ đến cầu Trường Tiền. Trà chiều và các món Huế được chuẩn bị tinh tế.',
+    roomType: 'Phòng Hương Giang Deluxe',
+    createdAt: '2026-09-24',
+    verifiedBooking: true,
+    likes: 9
   }
 ];
 
+export const initialAdditionalUsers = [
+  {
+    id: 'user-demo-02',
+    name: 'Trần Minh Anh',
+    email: 'minhanh@example.com',
+    password: 'Password123@',
+    phone: '0912345678',
+    tier: 'Silver',
+    points: 1850,
+    pointsToNextTier: 1150,
+    nextTier: 'Gold',
+    memberSince: '2025-06-12',
+    totalBookings: 3,
+    role: 'user',
+    benefits: ['Ưu đãi hội viên Silver'],
+    notifications: []
+  },
+  {
+    id: 'user-demo-03',
+    name: 'Lê Hoàng Nam',
+    email: 'hoangnam@example.com',
+    password: 'Password123@',
+    phone: '0934567890',
+    tier: 'Bronze',
+    points: 700,
+    pointsToNextTier: 800,
+    nextTier: 'Silver',
+    memberSince: '2026-02-08',
+    totalBookings: 1,
+    role: 'user',
+    benefits: ['Tặng 500 điểm thưởng chào mừng'],
+    notifications: []
+  },
+  {
+    id: 'user-demo-04',
+    name: 'Phạm Thuỳ Linh',
+    email: 'thuylinh@example.com',
+    password: 'Password123@',
+    phone: '0978123456',
+    tier: 'Gold',
+    points: 3400,
+    pointsToNextTier: 2600,
+    nextTier: 'Diamond',
+    memberSince: '2024-11-20',
+    totalBookings: 5,
+    role: 'user',
+    benefits: ['Ưu đãi hội viên Gold'],
+    notifications: []
+  }
+];
+
+export const initialAdminUser = {
+  id: 'user-admin',
+  name: 'Quản Trị Viên AuraResort',
+  email: 'admin@auraresort.vn',
+  password: 'Admin123@',
+  phone: '0901234567',
+  role: 'admin',
+  tier: 'Bronze',
+  points: 0,
+  pointsToNextTier: 0,
+  nextTier: 'Bronze',
+  memberSince: '2024-01-01',
+  totalBookings: 0,
+  benefits: [],
+  notifications: []
+};
+
 export const initialLoyaltyUser = {
-  id: 'user-vip-demo',
+  id: 'user-vip-01',
   name: 'Nguyễn Hải Đăng',
   email: 'haidang.resort@gmail.com',
   phone: '0988 123 456',
@@ -849,6 +1065,245 @@ Tiếng khua chèo nhịp nhàng bằng chân của các bà, các mẹ bản đ
 ### 2. Đỉnh Núi Ngọa Long — Tầm Nhìn 360 Độ Ôm Trọn Cố Đô
 Vượt qua gần 500 bậc đá uốn lượn theo sườn núi dốc, du khách sẽ đặt chân lên đỉnh Hang Múa nơi có tượng rồng đá canh giữ non sông. Từ đây, toàn cảnh thung lũng Tam Cốc hiện ra ngoạn mục như một bức tranh thủy mặc khổng lồ.
     `
+  },
+  {
+    id: 'art-5',
+    title: 'Hạ Long Từ Bình Minh: Một Ngày Trên Vịnh Di Sản',
+    slug: 'ha-long-binh-minh-vinh-di-san',
+    hotelId: 'hotel-halong',
+    location: 'Hạ Long, Quảng Ninh',
+    category: 'Kỳ Nghỉ Biển Đảo',
+    readTime: '5 phút đọc',
+    publishedDate: '12/09/2026',
+    author: {
+      name: 'Nguyễn Hải Yến',
+      role: 'Biên tập viên Du lịch Aura',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop'
+    },
+    coverImage: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1200&auto=format&fit=crop',
+    excerpt: 'Bắt đầu ngày mới trên mặt vịnh yên ả, ghé thăm hang đá và thưởng thức hải sản địa phương trong hành trình khám phá Hạ Long.',
+    content: `
+Vịnh Hạ Long đẹp nhất khi thành phố vừa thức giấc. Ánh nắng đầu ngày trải trên mặt nước, làm nổi bật những đảo đá và làng chài yên bình.
+
+### 1. Lên Du Thuyền Từ Sớm
+Chọn chuyến khởi hành buổi sáng để tận hưởng không khí mát lành và có thêm thời gian tham quan các hang động, bãi tắm trên vịnh.
+
+### 2. Thưởng Thức Hương Vị Quảng Ninh
+Sau chuyến đi, hãy dành thời gian thử chả mực giã tay, sam biển và các món hải sản theo mùa tại khu vực Bãi Cháy.
+    `
+  },
+  {
+    id: 'art-6',
+    title: 'Một Ngày Chậm Rãi Giữa Cố Đô Huế',
+    slug: 'mot-ngay-cham-rai-giua-co-do-hue',
+    hotelId: 'hotel-hue',
+    location: 'Huế, Thừa Thiên Huế',
+    category: 'Văn Hóa Bản Địa',
+    readTime: '5 phút đọc',
+    publishedDate: '15/09/2026',
+    author: {
+      name: 'Đỗ Thanh Tâm',
+      role: 'Chuyên gia Văn hóa Cố đô',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'
+    },
+    coverImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+    excerpt: 'Từ Đại Nội đến những khu vườn nhà rường, nhịp sống chậm của Huế mở ra qua từng món ăn và câu chuyện bên dòng Hương Giang.',
+    content: `
+Huế không cần vội. Một buổi sáng tham quan Đại Nội, buổi trưa thưởng thức món ăn địa phương và buổi chiều ngồi bên sông Hương đã đủ để cảm nhận nét trầm lắng của cố đô.
+
+### 1. Dạo Bước Trong Đại Nội
+Hãy dành thời gian khám phá các cung điện, cổng thành và khu vườn cổ để hiểu thêm về kiến trúc triều Nguyễn.
+
+### 2. Nghe Ca Huế Trên Sông Hương
+Khi chiều xuống, một chuyến thuyền ngắn mang đến góc nhìn khác về thành phố và những làn điệu truyền thống.
+    `
+  }
+];
+
+export const initialAdditionalTourismSpots = [
+  {
+    id: 'tour-hl-1',
+    hotelId: 'hotel-halong',
+    name: 'Hang Sửng Sốt và Tuyến Tham Quan Vịnh',
+    category: 'Thiên nhiên & Sinh thái',
+    distanceKm: 8.5,
+    description: 'Khám phá hang động rộng lớn với hệ thống nhũ đá nhiều hình dáng và ngắm toàn cảnh vịnh từ đảo Bồ Hòn.',
+    highlight: 'Không gian hang động kỳ vĩ giữa quần thể di sản Hạ Long',
+    image: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800&auto=format&fit=crop',
+    coordinates: { lat: 20.8721, lng: 107.0845 },
+    culturalSignificance: 'Một trong những điểm tham quan nổi bật của Di sản thiên nhiên thế giới Vịnh Hạ Long.',
+    bestTimeToVisit: 'Buổi sáng từ 8h00 đến 11h00',
+    suggestedDuration: '3 - 4 giờ'
+  },
+  {
+    id: 'tour-hue-1',
+    hotelId: 'hotel-hue',
+    name: 'Đại Nội Huế và Hoàng Thành',
+    category: 'Di tích & Văn hoá',
+    distanceKm: 2.1,
+    description: 'Tham quan hệ thống cung điện, cổng thành và vườn ngự uyển gắn với lịch sử triều Nguyễn.',
+    highlight: 'Ngọ Môn và Điện Thái Hòa trong quần thể Hoàng Thành',
+    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=800&auto=format&fit=crop',
+    coordinates: { lat: 16.4698, lng: 107.5786 },
+    culturalSignificance: 'Quần thể di tích cố đô Huế được UNESCO công nhận là Di sản Văn hóa Thế giới.',
+    bestTimeToVisit: 'Sáng sớm hoặc sau 15h00',
+    suggestedDuration: '2 - 3 giờ'
+  }
+];
+
+export const initialAdditionalPromotions = [
+  {
+    id: 'promo-5',
+    title: 'Khám Phá Di Sản Hạ Long',
+    code: 'HALONG10',
+    discountPercent: 10,
+    maxDiscount: 900000,
+    description: 'Ưu đãi phòng nghỉ tại Aura Ha Long Heritage Bay, áp dụng cho đặt phòng từ 2 đêm.',
+    validUntil: '2026-12-31',
+    minTier: 'Bronze',
+    category: 'Khám phá di sản',
+    badge: 'Ưu đãi mới',
+    bannerImage: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    id: 'promo-6',
+    title: 'Nghỉ Dưỡng Bên Sông Hương',
+    code: 'HUEHERITAGE',
+    discountPercent: 12,
+    maxDiscount: 750000,
+    description: 'Giảm giá phòng và tặng trà chiều cung đình tại Aura Hue Imperial Riverside.',
+    validUntil: '2026-12-31',
+    minTier: 'Bronze',
+    category: 'Văn hóa bản địa',
+    badge: 'Ưu đãi thành viên',
+    bannerImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop'
+  }
+];
+
+export const initialBookings = [
+  {
+    id: 'book-init-1',
+    bookingCode: 'AURA-BK-8892',
+    customerName: 'Nguyễn Hải Đăng',
+    customerEmail: 'haidang.resort@gmail.com',
+    customerPhone: '0988 123 456',
+    hotelId: 'hotel-danang',
+    hotelName: 'Aura Danang Ocean Sanctuary',
+    roomId: 'room-dad-2',
+    roomName: 'Sanctuary Suite Biển Ngọc',
+    checkInDate: '2026-09-18',
+    checkOutDate: '2026-09-20',
+    nights: 2,
+    guests: 2,
+    roomPrice: 4200000,
+    discountAmount: 1260000,
+    voucherApplied: 'VIPGOLD25',
+    totalAmount: 7140000,
+    paymentStatus: 'paid',
+    paymentMethod: 'vnpay',
+    specialRequests: 'Trang trí phòng trăng mật và hoa tươi chào đón.',
+    loyaltyPointsEarned: 357,
+    status: 'completed',
+    createdAt: '2026-08-20T08:00:00.000Z'
+  },
+  {
+    id: 'book-demo-2',
+    bookingCode: 'AURA-BK-9021',
+    customerName: 'Trần Minh Anh',
+    customerEmail: 'minhanh@example.com',
+    customerPhone: '0912345678',
+    hotelId: 'hotel-halong',
+    hotelName: 'Aura Ha Long Heritage Bay',
+    roomId: 'room-hl-1',
+    roomName: 'Phòng Bay View Deluxe',
+    checkInDate: '2026-10-20',
+    checkOutDate: '2026-10-22',
+    nights: 2,
+    guests: 2,
+    roomPrice: 2750000,
+    discountAmount: 550000,
+    voucherApplied: 'HALONG10',
+    totalAmount: 4950000,
+    paymentStatus: 'paid',
+    paymentMethod: 'momo',
+    specialRequests: 'Phòng tầng cao nếu còn trống.',
+    loyaltyPointsEarned: 248,
+    status: 'confirmed',
+    createdAt: '2026-09-25T10:30:00.000Z'
+  },
+  {
+    id: 'book-demo-3',
+    bookingCode: 'AURA-BK-9147',
+    customerName: 'Lê Hoàng Nam',
+    customerEmail: 'hoangnam@example.com',
+    customerPhone: '0934567890',
+    hotelId: 'hotel-hue',
+    hotelName: 'Aura Hue Imperial Riverside',
+    roomId: 'room-hue-1',
+    roomName: 'Phòng Hương Giang Deluxe',
+    checkInDate: '2026-11-06',
+    checkOutDate: '2026-11-08',
+    nights: 2,
+    guests: 2,
+    roomPrice: 1950000,
+    discountAmount: 468000,
+    voucherApplied: 'HUEHERITAGE',
+    totalAmount: 3432000,
+    paymentStatus: 'pending',
+    paymentMethod: 'at_hotel',
+    specialRequests: 'Cần nôi em bé.',
+    loyaltyPointsEarned: 172,
+    status: 'confirmed',
+    createdAt: '2026-09-28T14:00:00.000Z'
+  },
+  {
+    id: 'book-demo-4',
+    bookingCode: 'AURA-BK-9284',
+    customerName: 'Phạm Thuỳ Linh',
+    customerEmail: 'thuylinh@example.com',
+    customerPhone: '0978123456',
+    hotelId: 'hotel-hoian',
+    hotelName: 'Aura Hoi An Ancient Heritage',
+    roomId: 'room-ha-1',
+    roomName: 'Heritage Villa Vườn Lụa Cổ Điển',
+    checkInDate: '2026-10-02',
+    checkOutDate: '2026-10-04',
+    nights: 2,
+    guests: 2,
+    roomPrice: 3200000,
+    discountAmount: 0,
+    totalAmount: 6400000,
+    paymentStatus: 'refunded',
+    paymentMethod: 'card',
+    specialRequests: '',
+    loyaltyPointsEarned: 0,
+    status: 'cancelled',
+    createdAt: '2026-09-30T09:15:00.000Z'
+  },
+  {
+    id: 'book-demo-5',
+    bookingCode: 'AURA-BK-9350',
+    customerName: 'Nguyễn Hải Đăng',
+    customerEmail: 'haidang.resort@gmail.com',
+    customerPhone: '0988 123 456',
+    hotelId: 'hotel-hue',
+    hotelName: 'Aura Hue Imperial Riverside',
+    roomId: 'room-hue-2',
+    roomName: 'Imperial Garden Suite',
+    checkInDate: '2026-12-24',
+    checkOutDate: '2026-12-26',
+    nights: 2,
+    guests: 3,
+    roomPrice: 3600000,
+    discountAmount: 900000,
+    voucherApplied: 'VIPGOLD25',
+    totalAmount: 6300000,
+    paymentStatus: 'paid',
+    paymentMethod: 'vietqr',
+    specialRequests: 'Chuẩn bị trà sen trong phòng.',
+    loyaltyPointsEarned: 315,
+    status: 'confirmed',
+    createdAt: '2026-10-01T11:20:00.000Z'
   }
 ];
 

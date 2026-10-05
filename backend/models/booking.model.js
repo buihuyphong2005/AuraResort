@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { initialBookings } from '../data/seedData.js';
 
 const BookingSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
@@ -40,33 +41,7 @@ const BookingSchema = new mongoose.Schema({
 
 export const MongooseBooking = mongoose.models.Booking || mongoose.model('Booking', BookingSchema);
 
-let memoryBookings = [
-  {
-    id: 'book-init-1',
-    bookingCode: 'AURA-BK-8892',
-    customerName: 'Nguyễn Hải Đăng',
-    customerEmail: 'haidang.resort@gmail.com',
-    customerPhone: '0988 123 456',
-    hotelId: 'hotel-danang',
-    hotelName: 'Aura Danang Ocean Sanctuary',
-    roomId: 'room-dad-2',
-    roomName: 'Sanctuary Suite Biển Ngọc',
-    checkInDate: '2026-09-18',
-    checkOutDate: '2026-09-20',
-    nights: 2,
-    guests: 2,
-    roomPrice: 4200000,
-    discountAmount: 1260000,
-    voucherApplied: 'VIPGOLD25',
-    totalAmount: 7140000,
-    paymentStatus: 'paid',
-    paymentMethod: 'vnpay',
-    specialRequests: 'Trang trí phòng trăng mật và hoa tươi chào đón.',
-    loyaltyPointsEarned: 357,
-    status: 'confirmed',
-    createdAt: new Date().toISOString()
-  }
-];
+let memoryBookings = [...initialBookings];
 
 export const BookingModel = {
   async create(bookingData) {
@@ -102,6 +77,18 @@ export const BookingModel = {
     return res;
   },
 
+  async findById(id) {
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const found = await MongooseBooking.findOne({ id });
+        if (found) return found;
+      } catch (e) {
+        console.warn('Fallback to memory booking by id:', e.message);
+      }
+    }
+    return memoryBookings.find(b => b.id === id) || null;
+  },
+
   async findByCode(bookingCode) {
     if (mongoose.connection.readyState === 1) {
       try {
@@ -112,5 +99,28 @@ export const BookingModel = {
       }
     }
     return memoryBookings.find(b => b.bookingCode.toUpperCase() === bookingCode.toUpperCase()) || null;
+  },
+
+  async updateStatus(id, status) {
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const updated = await MongooseBooking.findOneAndUpdate(
+          { id },
+          { $set: { status } },
+          { new: true }
+        );
+        if (updated) {
+          const mem = memoryBookings.find(b => b.id === id);
+          if (mem) mem.status = status;
+          return updated;
+        }
+      } catch (e) {
+        console.warn('Fallback to memory booking updateStatus:', e.message);
+      }
+    }
+    const mem = memoryBookings.find(b => b.id === id);
+    if (!mem) return null;
+    mem.status = status;
+    return mem;
   }
 };

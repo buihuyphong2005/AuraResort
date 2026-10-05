@@ -15,7 +15,8 @@ import {
   User,
   Users,
   LogOut,
-  LogIn
+  LogIn,
+  ShieldCheck
 } from 'lucide-react';
 import { LoyaltyUser } from '../types/index.ts';
 
@@ -41,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showNotifications, setShowNotifications] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const unreadCount = currentUser?.notifications.filter(n => !n.read).length || 0;
+  const unreadCount = currentUser?.notifications?.filter(n => !n.read).length || 0;
 
   const handleNav = (page: string) => {
     onNavigate(page);
@@ -135,12 +136,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           {currentUser?.role === 'admin' && (
             <button 
               onClick={() => handleNav('admin')}
-              className={`py-1 cursor-pointer transition-colors flex items-center gap-1.5 ${
-                activePage === 'admin' ? 'text-amber-400 border-b-2 border-amber-400' : 'hover:text-amber-400'
-              }`}
+              className="py-1 px-2.5 rounded-lg bg-amber-500/15 border border-amber-400/40 text-amber-300 hover:bg-amber-400 hover:text-stone-950 font-bold cursor-pointer transition-all flex items-center gap-1.5 shadow-sm"
+              title="Vào Trung Tâm Quản Trị Hệ Thống"
             >
-              <Users className="w-3.5 h-3.5 text-amber-400" />
-              <span>Quản Trị</span>
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Portal Quản Trị</span>
             </button>
           )}
         </nav>
@@ -329,13 +329,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Ưu Đãi Hội Viên</span>
           </button>
 
-          {currentUser?.role === 'admin' && (
+          {currentUser?.role === 'admin' ? (
             <button
               onClick={() => handleNav('admin')}
-              className={`w-full text-left py-2 px-3 rounded-xl flex items-center gap-2 ${activePage === 'admin' ? 'bg-amber-500/10 text-amber-400' : 'text-stone-300'}`}
+              className="w-full text-left py-2 px-3 rounded-xl flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold"
             >
-              <Users className="w-4 h-4 text-amber-400" />
-              <span>Quản Trị (Admin)</span>
+              <ShieldCheck className="w-4 h-4 text-amber-400" />
+              <span>Trung Tâm Quản Trị (Admin Portal)</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => handleNav('admin')}
+              className="w-full text-left py-2 px-3 rounded-xl flex items-center gap-2 text-stone-400 hover:text-amber-400 text-xs"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Cổng Quản Trị Viên (Staff Portal)</span>
             </button>
           )}
 

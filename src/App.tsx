@@ -82,21 +82,43 @@ export function App() {
         const savedToken = localStorage.getItem('aura_token');
         const savedUserStr = localStorage.getItem('aura_user');
         if (savedToken && savedUserStr) {
+          const restoreUser = (user: LoyaltyUser) => {
+            if (!user?.id || !user.name) {
+              localStorage.removeItem('aura_token');
+              localStorage.removeItem('aura_user');
+              return;
+            }
+            setCurrentUser(user);
+            if (user.role === 'admin') setActivePage('admin');
+          };
+
           try {
             const parsed = JSON.parse(savedUserStr);
-            setCurrentUser(parsed);
+            // Refresh user profile from server using their specific userId
+            if (parsed?.id) {
+              const freshUser = await api.getLoyaltyProfile(parsed.id);
+              if (freshUser) {
+                restoreUser(freshUser);
+                localStorage.setItem('aura_user', JSON.stringify(freshUser));
+              } else {
+                restoreUser(parsed);
+              }
+            } else {
+              restoreUser(parsed);
+            }
           } catch {
-            // fallback
-          }
-        } else {
-          // Default demo profile
-          try {
-            const fetchedUser = await api.getLoyaltyProfile();
-            setCurrentUser(fetchedUser);
-          } catch {
-            // ignore
+            // If server is down, use cached user from localStorage
+            try {
+              const parsed = JSON.parse(savedUserStr);
+              restoreUser(parsed);
+            } catch {
+              // Corrupted localStorage - clear it
+              localStorage.removeItem('aura_token');
+              localStorage.removeItem('aura_user');
+            }
           }
         }
+        // No else block: if not logged in, currentUser remains null
       } catch (err) {
         console.error('Failed to load initial data:', err);
       } finally {
@@ -116,6 +138,9 @@ export function App() {
   }, []);
 
   const handleNavigate = (page: string) => {
+    if (currentUser?.role === 'admin' && page !== 'admin') {
+      handleLogout();
+    }
     setActivePage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -130,6 +155,9 @@ export function App() {
     setCurrentUser(user);
     localStorage.setItem('aura_token', token);
     localStorage.setItem('aura_user', JSON.stringify(user));
+    if (user.role === 'admin') {
+      setActivePage('admin');
+    }
   };
 
   const handleLogout = () => {
@@ -207,6 +235,17 @@ export function App() {
   const filteredHotels = selectedCity
     ? hotels.filter(h => h.city.toLowerCase() === selectedCity.toLowerCase())
     : hotels;
+
+  // DEDICATED ADMIN PORTAL VIEW (TÁCH BIỆT HOÀN TOÀN KHỎI GIAO DIỆN NGƯỜI DÙNG)
+  if (activePage === 'admin') {
+    return (
+      <AdminPage
+        currentUser={currentUser}
+        onNavigate={handleNavigate}
+        onAdminLogin={handleAuthSuccess}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-amber-200 selection:text-stone-900 flex flex-col justify-between">
@@ -330,19 +369,10 @@ export function App() {
             onNavigateToHotels={() => handleNavigate('hotels')}
           />
         )}
-
-        {/* PAGE 8: ADMIN DASHBOARD */}
-        {activePage === 'admin' && (
-          <AdminPage
-            currentUser={currentUser}
-            onNavigate={handleNavigate}
-          />
-        )}
-
       </div>
 
       {/* 3. Global Footer */}
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
 
       {/* MODAL: Auth Modal (Đăng nhập / Đăng ký) */}
       <AuthModal
