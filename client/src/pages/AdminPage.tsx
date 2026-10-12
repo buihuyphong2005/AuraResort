@@ -47,8 +47,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onNavigate, o
   const [roomStockInputs, setRoomStockInputs] = useState<Record<string, number>>({});
 
   // Admin dedicated login form state
-  const [loginEmail, setLoginEmail] = useState('admin@auraresort.vn');
-  const [loginPassword, setLoginPassword] = useState('Admin123@');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
 
@@ -122,8 +122,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onNavigate, o
 
   // Handle quick login as admin
   const handleQuickLoginAdmin = async () => {
-    setLoginEmail('admin@auraresort.vn');
-    setLoginPassword('Admin123@');
     setLoginLoading(true);
     setLoginError('');
     try {
@@ -258,13 +256,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onNavigate, o
               </div>
             )}
 
-            <form onSubmit={handleAdminSubmitLogin} className="space-y-4 text-xs">
+            <form onSubmit={handleAdminSubmitLogin} autoComplete="off" className="space-y-4 text-xs">
               <div>
                 <label className="block text-stone-300 font-medium mb-1">Email quản trị viên</label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-stone-500 absolute left-3.5 top-3" />
                   <input
                     type="email"
+                    autoComplete="off"
                     required
                     value={loginEmail}
                     onChange={e => setLoginEmail(e.target.value)}
@@ -280,6 +279,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onNavigate, o
                   <Lock className="w-4 h-4 text-stone-500 absolute left-3.5 top-3" />
                   <input
                     type="password"
+                    autoComplete="new-password"
                     required
                     value={loginPassword}
                     onChange={e => setLoginPassword(e.target.value)}
@@ -314,7 +314,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ currentUser, onNavigate, o
                 className="w-full py-2.5 px-4 bg-stone-800 hover:bg-stone-700 text-amber-300 font-semibold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 border border-stone-700 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Đăng Nhập Nhanh Quản Trị Viên (admin@auraresort.vn)</span>
+                <span>Đăng Nhập Nhanh Quản Trị Viên</span>
               </button>
             </div>
           </div>

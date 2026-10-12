@@ -3,7 +3,15 @@ import { RoomModel } from '../models/room.model.js';
 
 export const HotelService = {
   async getAllHotels(query = {}) {
-    return await HotelModel.find(query);
+    const hotels = await HotelModel.find(query);
+    const rooms = await RoomModel.find({});
+    return hotels.map(hotel => {
+      const hotelObj = hotel && typeof hotel.toObject === 'function' ? hotel.toObject() : { ...hotel };
+      return {
+        ...hotelObj,
+        rooms: rooms.filter(r => r.hotelId === (hotel.id || hotelObj.id))
+      };
+    });
   },
 
   async getHotelById(id) {

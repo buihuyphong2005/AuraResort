@@ -161,13 +161,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Login Form */}
         {mode === 'login' && (
-          <form onSubmit={handleLogin} className="space-y-4 text-xs">
+          <form onSubmit={handleLogin} autoComplete="off" className="space-y-4 text-xs">
             <div>
               <label className="block text-stone-300 font-semibold mb-1">Email đăng ký *</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-stone-500 absolute left-3.5 top-3" />
                 <input
                   type="email"
+                  autoComplete="off"
                   required
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
@@ -186,6 +187,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <Lock className="w-4 h-4 text-stone-500 absolute left-3.5 top-3" />
                 <input
                   type="password"
+                  autoComplete="new-password"
                   required
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
@@ -220,13 +222,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Register Form */}
         {mode === 'register' && (
-          <form onSubmit={handleRegister} className="space-y-3.5 text-xs">
+          <form onSubmit={handleRegister} autoComplete="off" className="space-y-3.5 text-xs">
             <div>
               <label className="block text-stone-300 font-semibold mb-1">Họ và tên *</label>
               <div className="relative">
                 <User className="w-4 h-4 text-stone-500 absolute left-3.5 top-3" />
                 <input
                   type="text"
+                  autoComplete="off"
                   required
                   value={regName}
                   onChange={(e) => setRegName(e.target.value)}
@@ -241,6 +244,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <label className="block text-stone-300 font-semibold mb-1">Email *</label>
                 <input
                   type="email"
+                  autoComplete="off"
                   required
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
@@ -252,6 +256,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <label className="block text-stone-300 font-semibold mb-1">Số điện thoại *</label>
                 <input
                   type="tel"
+                  autoComplete="off"
                   required
                   value={regPhone}
                   onChange={(e) => setRegPhone(e.target.value)}
@@ -265,6 +270,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <label className="block text-stone-300 font-semibold mb-1">Mật khẩu (tối thiểu 6 ký tự) *</label>
               <input
                 type="password"
+                autoComplete="new-password"
                 required
                 value={regPassword}
                 onChange={(e) => setRegPassword(e.target.value)}
@@ -277,6 +283,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <label className="block text-stone-300 font-semibold mb-1">Xác nhận lại mật khẩu *</label>
               <input
                 type="password"
+                autoComplete="new-password"
                 required
                 value={regConfirmPassword}
                 onChange={(e) => setRegConfirmPassword(e.target.value)}

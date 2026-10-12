@@ -29,7 +29,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onSearch,
   onOpenChat
 }) => {
-  const cities = ['Tất cả', 'Đà Nẵng', 'Sa Pa', 'Hội An', 'Phú Quốc', 'Ninh Bình', 'Đà Lạt'];
+  const dynamicCities = Array.from(new Set(hotels.map(h => h.city).filter(Boolean)));
+  const cities = ['Tất cả', ...(dynamicCities.length > 0 ? dynamicCities : ['Đà Nẵng', 'Sa Pa', 'Hội An', 'Phú Quốc', 'Ninh Bình', 'Đà Lạt', 'Hạ Long', 'Huế'])];
 
   return (
     <div className="relative min-h-[640px] lg:min-h-[720px] flex items-center justify-center overflow-hidden bg-stone-950 text-white" id="hero">
@@ -97,13 +98,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="w-full bg-transparent text-stone-100 font-medium text-sm focus:outline-none cursor-pointer"
                 id="search-city-select"
               >
-                <option value="" className="bg-stone-900 text-stone-200">Tất cả chi nhánh (6 Resorts)</option>
-                <option value="Đà Nẵng" className="bg-stone-900 text-stone-200">Đà Nẵng - Biển Mỹ Khê</option>
-                <option value="Sa Pa" className="bg-stone-900 text-stone-200">Sa Pa - Thung lũng Mường Hoa</option>
-                <option value="Hội An" className="bg-stone-900 text-stone-200">Hội An - Sông Hoài Di Sản</option>
-                <option value="Phú Quốc" className="bg-stone-900 text-stone-200">Phú Quốc - Đảo Ngọc Bãi Dài</option>
-                <option value="Ninh Bình" className="bg-stone-900 text-stone-200">Ninh Bình - Tràng An Tam Cốc</option>
-                <option value="Đà Lạt" className="bg-stone-900 text-stone-200">Đà Lạt - Hồ Tuyền Lâm</option>
+                <option value="" className="bg-stone-900 text-stone-200">Tất cả chi nhánh ({hotels.length} Resorts)</option>
+                {hotels.map((h) => (
+                  <option key={h.id} value={h.city} className="bg-stone-900 text-stone-200">
+                    {h.city} - {h.name}
+                  </option>
+                ))}
               </select>
             </div>
 

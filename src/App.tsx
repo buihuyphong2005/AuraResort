@@ -166,11 +166,20 @@ export function App() {
     localStorage.removeItem('aura_user');
   };
 
-  // Open Room Selector modal for a hotel
-  const handleOpenRooms = async (hotel: Hotel) => {
+  // Open Room Selector modal for a hotel, or proceed directly if room is preselected
+  const handleOpenRooms = async (hotel: Hotel, preselectedRoom?: Room) => {
+    if (preselectedRoom) {
+      setBookingRoom({
+        hotel,
+        room: preselectedRoom
+      });
+      return;
+    }
     setHotelForRoomsModal(hotel);
     try {
-      const rooms = await api.getRoomsByHotel(hotel.id, guests);
+      const rooms = (hotel.rooms && hotel.rooms.length > 0)
+        ? hotel.rooms
+        : await api.getRoomsByHotel(hotel.id);
       setRoomsForModal(rooms);
     } catch (err) {
       console.error(err);

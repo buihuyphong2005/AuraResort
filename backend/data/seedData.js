@@ -313,6 +313,25 @@ export const initialRooms = [
     totalRooms: 6,
     availableRooms: 6
   },
+  {
+    id: 'room-sp-3',
+    hotelId: 'hotel-sapa',
+    name: 'Fansipan Grand Chalet Villa Hoàng Gia',
+    type: 'Villa',
+    pricePerNight: 8500000,
+    capacity: 4,
+    bedType: '2 Giường King Hoàng Gia',
+    areaSqm: 175,
+    view: 'Toàn cảnh biển mây thung lũng & Đỉnh Fansipan',
+    images: [
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Bể sục khoáng nước nóng ngoài trời', 'Lò sưởi củi gỗ thông Tây Bắc', 'Bữa sáng thượng hạng tại biệt thự', 'Quản gia riêng phục vụ 24/7', 'Vé cáp treo Fansipan Legend VIP'],
+    isAvailable: true,
+    totalRooms: 4,
+    availableRooms: 4
+  },
 
   // Hội An
   {
@@ -352,6 +371,25 @@ export const initialRooms = [
     isAvailable: true,
     totalRooms: 4,
     availableRooms: 4
+  },
+  {
+    id: 'room-ha-3',
+    hotelId: 'hotel-hoian',
+    name: 'Hoài Giang Riverside Suite Đèn Lồng',
+    type: 'Suite',
+    pricePerNight: 3650000,
+    capacity: 3,
+    bedType: '1 Giường King & 1 Daybed Lụa',
+    areaSqm: 78,
+    view: 'Bến hoa đăng sông Hoài & Phố cổ Hội An',
+    images: [
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Ban công ngắm đèn lồng sông Hoài', 'Bồn tắm đá cẩm thạch ngâm hoa cúc', 'Trà thảo mộc cung đình buổi chiều', 'Thuyền gỗ riêng ngắm hoàng hôn', 'Đưa đón phố cổ miễn phí'],
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
   },
 
   // Phú Quốc
@@ -393,6 +431,25 @@ export const initialRooms = [
     totalRooms: 5,
     availableRooms: 5
   },
+  {
+    id: 'room-pq-3',
+    hotelId: 'hotel-phuquoc',
+    name: 'Emerald Oceanfront Suite Hoàng Hôn',
+    type: 'Suite',
+    pricePerNight: 5400000,
+    capacity: 3,
+    bedType: '1 Giường King Siêu Lớn & Sofa Bed',
+    areaSqm: 92,
+    view: 'Trực diện hoàng hôn Bãi Dài biển Tây',
+    images: [
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Bồn tắm sục Jacuzzi kính ngắm biển', 'Quầy bar mini miễn phí bổ sung mỗi ngày', 'Thuyền kayak & ván SUP riêng', 'Đưa đón limousine sân bay Phú Quốc', 'Cocktail hoàng hôn tại ban công'],
+    isAvailable: true,
+    totalRooms: 8,
+    availableRooms: 8
+  },
 
   // Ninh Bình
   {
@@ -413,6 +470,44 @@ export const initialRooms = [
     isAvailable: true,
     totalRooms: 10,
     availableRooms: 10
+  },
+  {
+    id: 'room-nb-2',
+    hotelId: 'hotel-ninhbinh',
+    name: 'Tràng An Lotus Suite Thủy Mặc',
+    type: 'Suite',
+    pricePerNight: 4350000,
+    capacity: 3,
+    bedType: '1 Giường King & Giường Đơn Phụ',
+    areaSqm: 88,
+    view: 'Quần thể thung lũng đá vôi Tràng An & Đầm sen',
+    images: [
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Phòng khách mở hướng vách núi đá', 'Bồn tắm đá nguyên khối ngâm cánh sen', 'Hiên thưởng trà đạo sương sớm', 'Thuyền nan đón tại bến riêng resort', 'Bữa sáng đặc sản Ninh Bình'],
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
+  },
+  {
+    id: 'room-nb-3',
+    hotelId: 'hotel-ninhbinh',
+    name: 'Biệt Thự Đầm Sen Cố Đô - Imperial Lotus Villa',
+    type: 'Villa',
+    pricePerNight: 7200000,
+    capacity: 4,
+    bedType: '2 Giường King Đôi',
+    areaSqm: 180,
+    view: 'Biệt lập giữa lòng hồ sen Tam Cốc & Vách núi kỳ vĩ',
+    images: [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Hồ bơi nước khoáng sinh thái riêng tư', 'Bếp nướng BBQ ngoài trời', 'Xe đạp dạo đồng lúa Tam Cốc', 'Đầu bếp riêng phục vụ ẩm thực 5 sao', 'Quản gia hỗ trợ hành trình tham quan'],
+    isAvailable: true,
+    totalRooms: 4,
+    availableRooms: 4
   },
 
   // Đà Lạt
@@ -435,6 +530,46 @@ export const initialRooms = [
     totalRooms: 8,
     availableRooms: 8
   },
+  {
+    id: 'room-dl-2',
+    hotelId: 'hotel-dalat',
+    name: 'Dinh Thự Hoàng Gia Suite Sương Mù',
+    type: 'Suite',
+    pricePerNight: 4100000,
+    capacity: 3,
+    bedType: '1 Giường King Cổ Điển & Lò Sưởi Đá',
+    areaSqm: 82,
+    view: 'Mặt hồ Tuyền Lâm mờ sương & Đồi thông cổ thụ',
+    images: [
+      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Lò sưởi củi cổ điển ấm cúng', 'Ban công vọng cảnh thưởng trà Atiso', 'Bồn tắm đồng phong cách Pháp cổ', 'Máy hát đĩa vinyl & tuyển tập jazz', 'Rượu vang Đà Lạt ủ sồi chào mừng'],
+    isAvailable: true,
+    totalRooms: 6,
+    availableRooms: 6
+  },
+  {
+    id: 'room-dl-3',
+    hotelId: 'hotel-dalat',
+    name: 'Aura Manor Villa Ven Hồ Tuyền Lâm',
+    type: 'Villa',
+    pricePerNight: 7600000,
+    capacity: 4,
+    bedType: '2 Phòng Ngủ King Biệt Lập',
+    areaSqm: 195,
+    view: 'Khu vườn cẩm tú cầu & Bến thuyền Hồ Tuyền Lâm',
+    images: [
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Bể Onsen khoáng nóng lộ thiên giữa rừng thông', 'Vườn nướng BBQ riêng biệt', 'Thuyền kayak & chèo SUP hồ Tuyền Lâm', 'Bữa sáng kiểu Pháp phục vụ tại villa', 'Quản gia riêng phục vụ 24/7'],
+    isAvailable: true,
+    totalRooms: 3,
+    availableRooms: 3
+  },
+
+  // Hạ Long
   {
     id: 'room-hl-1',
     hotelId: 'hotel-halong',
@@ -474,6 +609,27 @@ export const initialRooms = [
     availableRooms: 6
   },
   {
+    id: 'room-hl-3',
+    hotelId: 'hotel-halong',
+    name: 'Biệt Thự Vịnh Ngọc - Heritage Bayfront Villa',
+    type: 'Villa',
+    pricePerNight: 8200000,
+    capacity: 4,
+    bedType: '2 Giường King Hướng Vịnh',
+    areaSqm: 185,
+    view: 'Toàn cảnh kỳ quan vịnh Hạ Long 180 độ',
+    images: [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Hồ bơi vô cực view trực diện vách đá vịnh', 'Chuyến du thuyền riêng 2 giờ ngắm hoàng hôn', 'Tiệc tối hải sản Hạ Long thượng hạng tại villa', 'Bồn sục Jacuzzi ngoài trời', 'Đưa đón limousine cao tốc Hà Nội - Hạ Long'],
+    isAvailable: true,
+    totalRooms: 4,
+    availableRooms: 4
+  },
+
+  // Huế
+  {
     id: 'room-hue-1',
     hotelId: 'hotel-hue',
     name: 'Phòng Hương Giang Deluxe',
@@ -510,6 +666,25 @@ export const initialRooms = [
     isAvailable: true,
     totalRooms: 5,
     availableRooms: 4
+  },
+  {
+    id: 'room-hue-3',
+    hotelId: 'hotel-hue',
+    name: 'Biệt Thự Cung Đình Cố Đô - Royal River Villa',
+    type: 'Villa',
+    pricePerNight: 6800000,
+    capacity: 4,
+    bedType: '2 Giường King Phong Cách Hoàng Gia',
+    areaSqm: 170,
+    view: 'Dòng sông Hương thơ mộng & Cầu Trường Tiền',
+    images: [
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop'
+    ],
+    amenities: ['Hồ bơi riêng rợp bóng sen', 'Trà chiều Nhã nhạc cung đình Huế', 'Thuyền rồng đưa rước du ngoạn sông Hương', 'Bộ y phục cung đình phục vụ chụp ảnh', 'Đầu bếp riêng phục vụ ẩm thực cung đình'],
+    isAvailable: true,
+    totalRooms: 3,
+    availableRooms: 3
   }
 ];
 
