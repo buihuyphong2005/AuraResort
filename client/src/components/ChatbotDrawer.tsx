@@ -120,7 +120,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
     {
       id: 'welcome-1',
       sender: 'model',
-      text: 'Kính chào quý khách! Em là **Aura Concierge** — Trợ lý du lịch và chăm sóc khách hàng 24/7 của chuỗi AuraResort Vietnam.\n\nEm luôn sẵn sàng hỗ trợ quý khách:\n• Tư vấn lựa chọn 6 chi nhánh nghỉ dưỡng cao cấp.\n• Hướng dẫn đặt phòng & thanh toán trực tuyến (VNPAY, MoMo, VietQR, Thẻ quốc tế).\n• Gợi ý danh thắng & trải nghiệm văn hóa địa phương đặc sắc.\n• Tra cứu mã ưu đãi hội viên Aura Loyalty Club.\n\nQuý khách muốn lên kế hoạch cho kỳ nghỉ sắp tới như thế nào ạ?',
+      text: 'Kính chào quý khách! Em là **Aura Concierge** — Cố vấn Du lịch & Trải nghiệm Văn hóa Việt Nam 24/7 của AuraResort. ✨\n\nEm luôn sẵn sàng đồng hành cùng quý khách:\n• 🗺️ **Tư vấn & Lên lịch trình du lịch chi tiết** (1N, 2N1Đ, 3N2Đ, 4N3Đ) cho cặp đôi, gia đình, nhóm bạn.\n• 🍜 **Cẩm nang ẩm thực & Quán ngon bản địa** chuẩn vị tại Sa Pa, Đà Nẵng, Hội An, Phú Quốc, Ninh Bình, Đà Lạt, Hạ Long, Huế.\n• ☀️ **Thời tiết & Mùa săn mây, ngắm lúa chín, tắm biển** đẹp nhất trong năm.\n• 🌸 **Trải nghiệm văn hóa & Danh lam thắng cảnh** độc đáo từng vùng miền.\n• 🏰 **Gợi ý không gian nghỉ dưỡng & Ưu đãi hội viên** phù hợp ngân sách.\n\nQuý khách đang muốn lên kế hoạch du lịch cho điểm đến nào ạ?',
       time: 'Vừa xong'
     }
   ]);
@@ -308,17 +308,17 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
       {
         id: 'welcome-1',
         sender: 'model',
-        text: 'Kính chào quý khách! Em là **Aura Concierge** — Trợ lý du lịch và chăm sóc khách hàng 24/7 của chuỗi AuraResort Vietnam.\n\nEm luôn sẵn sàng hỗ trợ quý khách:\n• Tư vấn lựa chọn 6 chi nhánh nghỉ dưỡng cao cấp.\n• Hướng dẫn đặt phòng & thanh toán trực tuyến (VNPAY, MoMo, VietQR, Thẻ quốc tế).\n• Gợi ý danh thắng & trải nghiệm văn hóa địa phương đặc sắc.\n• Tra cứu mã ưu đãi hội viên Aura Loyalty Club.\n\nQuý khách muốn lên kế hoạch cho kỳ nghỉ sắp tới như thế nào ạ?',
+        text: 'Kính chào quý khách! Em là **Aura Concierge** — Cố vấn Du lịch & Trải nghiệm Văn hóa Việt Nam 24/7 của AuraResort. ✨\n\nEm luôn sẵn sàng đồng hành cùng quý khách:\n• 🗺️ **Tư vấn & Lên lịch trình du lịch chi tiết** (1N, 2N1Đ, 3N2Đ, 4N3Đ) cho cặp đôi, gia đình, nhóm bạn.\n• 🍜 **Cẩm nang ẩm thực & Quán ngon bản địa** chuẩn vị tại Sa Pa, Đà Nẵng, Hội An, Phú Quốc, Ninh Bình, Đà Lạt, Hạ Long, Huế.\n• ☀️ **Thời tiết & Mùa săn mây, ngắm lúa chín, tắm biển** đẹp nhất trong năm.\n• 🌸 **Trải nghiệm văn hóa & Danh lam thắng cảnh** độc đáo từng vùng miền.\n• 🏰 **Gợi ý không gian nghỉ dưỡng & Ưu đãi hội viên** phù hợp ngân sách.\n\nQuý khách đang muốn lên kế hoạch du lịch cho điểm đến nào ạ?',
         time: 'Vừa xong'
       }
     ]);
   };
 
   const defaultPrompts = [
-    'Tư vấn resort view biển đẹp nhất',
-    'Nghỉ dưỡng Sa Pa mùa này có gì?',
-    'Cách thanh toán VNPAY / MoMo?',
-    'Mã giảm giá hội viên VIP?'
+    'Lịch trình du lịch văn hóa 3 ngày 2 đêm',
+    'Ăn gì ở Đà Nẵng ngon bổ rẻ?',
+    'Sa Pa mùa nào săn mây đẹp nhất?',
+    'Du lịch gia đình có trẻ em nên đi đâu?'
   ];
 
   const activePrompts = suggestionCategories.find(c => c.category === selectedCategory)?.prompts || defaultPrompts;
@@ -344,10 +344,10 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
                   ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
                   : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
                 }`}>
-                {configStatus?.configured ? 'Gemini 2.0 Active' : 'Offline Rule Engine'}
+                {configStatus?.configured ? 'Gemini AI Active' : 'Smart Travel Engine'}
               </span>
             </h3>
-            <p className="text-[11px] text-stone-400">Trợ lý du lịch & Nghỉ dưỡng thông minh 24/7</p>
+            <p className="text-[11px] text-stone-400">Cố vấn Du lịch, Lịch trình & Văn hóa 24/7</p>
           </div>
         </div>
 
@@ -394,7 +394,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
             </button>
           </div>
           <p className="text-[11px] text-stone-400">
-            Trạng thái hiện tại: <span className="font-mono text-stone-200 font-semibold">{configStatus?.configured ? '✅ Đã kích hoạt Google Gemini 2.0 AI' : '⚡ Đang chạy Chế độ Quy tắc Nội bộ Thông minh (Offline Concierge)'}</span>
+            Trạng thái hiện tại: <span className="font-mono text-stone-200 font-semibold">{configStatus?.configured ? '✅ Đã kích hoạt Google Gemini AI' : '⚡ Đang chạy Chế độ Cố vấn Du lịch & Lịch trình Thông minh (Aura Travel Engine)'}</span>
           </p>
           <div className="flex gap-2">
             <input
@@ -520,7 +520,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
               <span>{m.time}</span>
               {m.source && (
                 <span className="text-[9px] px-1 py-0.2 rounded bg-stone-800 text-stone-400 font-mono">
-                  {m.source === 'gemini' ? 'Gemini 2.0' : 'Aura Concierge'}
+                  {m.source === 'gemini' ? 'Gemini AI' : 'Travel AI Expert'}
                 </span>
               )}
             </div>
@@ -558,7 +558,7 @@ export const ChatbotDrawer: React.FC<ChatbotDrawerProps> = ({
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-          placeholder="Hỏi về phòng, văn hóa địa phương, ưu đãi..."
+          placeholder="Hỏi về lịch trình, món ngon, thời tiết, văn hóa, phòng nghỉ..."
           className="flex-1 bg-stone-900 border border-stone-800 focus:border-amber-500 rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none placeholder-stone-500"
         />
 
