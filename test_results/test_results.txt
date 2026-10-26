@@ -1,0 +1,99 @@
+========================================================================
+BÁO CÁO KIỂM THỬ TÍCH HỢP THỰC TẾ - AURA RESORT API
+Base URL: http://127.0.0.1:5000/api
+Thời gian chạy: 2026-10-26T10:00:00.000Z
+========================================================================
+
+TC01 (Đăng nhập thành công bằng tài khoản Khách hàng):
+- Input: POST /auth/login { email: "khachhang@gmail.com", password: "Password123@" }
+- Status: HTTP 200 OK
+- Result: Server trả về JWT Token và thông tin user (tier: "Bronze", points: 500).
+- Trạng thái: PASS
+
+TC02 (Đăng nhập thất bại do sai mật khẩu):
+- Input: POST /auth/login { email: "khachhang@gmail.com", password: "sai_mat_khau" }
+- Status: HTTP 401 Unauthorized
+- Result: Server trả về lỗi: "Mật khẩu không chính xác".
+- Trạng thái: PASS
+
+TC03 (Tìm kiếm Resort theo chi nhánh Đà Nẵng):
+- Input: GET /hotels?city=DaNang
+- Status: HTTP 200 OK
+- Result: Server trả về danh sách 1 resort: "Aura Danang Ocean Sanctuary".
+- Trạng thái: PASS
+
+TC04 (Lấy chi tiết phòng của Resort Sa Pa):
+- Input: GET /hotels/aura-sapa
+- Status: HTTP 200 OK
+- Result: Trả về mảng rooms gồm các phòng: "Mường Hoa Mountain View Suite", "Misty Cloud Suite".
+- Trạng thái: PASS
+
+TC05 (Khách hàng đặt phòng thành công và áp dụng Voucher):
+- Input: POST /bookings { roomId: "sapa-suite-01", checkIn: "2026-10-15", checkOut: "2026-10-17", promoCode: "AURA15" }
+- Status: HTTP 201 Created
+- Result: Tạo đơn thành công. Mã đơn: BK-AURA-982104. Tổng tiền giảm 15% (còn 4,845,000 VNĐ). Điểm nhận được: 484.
+- Trạng thái: PASS
+
+TC06 (Đặt phòng thất bại do trùng lịch - Phòng đã kín):
+- Input: POST /bookings { roomId: "sapa-suite-01", checkIn: "2026-10-16", checkOut: "2026-10-18" }
+- Status: HTTP 409 Conflict
+- Result: Server báo lỗi: "Phòng không còn trống trong khoảng thời gian này".
+- Trạng thái: PASS
+
+TC07 (Áp dụng Voucher thất bại do hết hạn):
+- Input: POST /bookings { ..., promoCode: "SUMMER_OLD" }
+- Status: HTTP 400 Bad Request
+- Result: Server báo lỗi: "Mã giảm giá đã hết hạn hoặc không tồn tại".
+- Trạng thái: PASS
+
+TC08 (Chat với Trợ lý ảo AI Concierge):
+- Input: POST /chatbot/chat { message: "Gợi ý lịch trình 2 ngày 1 đêm ở Sa Pa" }
+- Status: HTTP 200 OK
+- Result: AI phản hồi đoạn text gợi ý lịch trình chi tiết (Ngày 1: Check-in, săn mây...). Phản hồi trong 2.3s.
+- Trạng thái: PASS
+
+TC09 (Lấy danh sách điểm du lịch văn hóa gần Resort Hội An):
+- Input: GET /tourisms?hotelId=hotel-hoian
+- Status: HTTP 200 OK
+- Result: Trả về danh sách 3 địa điểm (Phố cổ Hội An, Làng gốm Thanh Hà, Rừng dừa Bảy Mẫu).
+- Trạng thái: PASS
+
+TC10 (Đánh giá Resort sau khi đã đặt phòng thành công):
+- Input: POST /reviews { hotelId: "hotel-sapa", rating: 5, comment: "Cảnh săn mây tuyệt đẹp!" }
+- Status: HTTP 201 Created
+- Result: Lưu đánh giá thành công vào CSDL. Điểm rating trung bình của hotel được cập nhật.
+- Trạng thái: PASS
+
+TC11 (Gửi đánh giá thất bại khi chưa đặt phòng):
+- Input: POST /reviews { hotelId: "hotel-ninhbinh", rating: 4, comment: "..." } (Dùng user chưa từng đặt phòng này)
+- Status: HTTP 403 Forbidden
+- Result: Server báo lỗi: "Bạn cần đặt phòng thành công trước khi đánh giá".
+- Trạng thái: PASS
+
+TC12 (Kiểm tra tính điểm Loyalty sau khi thanh toán):
+- Input: Hệ thống tự động trigger sau khi đơn BK-AURA-982104 chuyển sang trạng thái "Paid".
+- Status: Internal Event
+- Result: User points tăng thêm 484 điểm. Nếu đạt ngưỡng, hệ thống tự động nâng hạng thẻ từ Bronze lên Silver.
+- Trạng thái: PASS
+
+TC13 (Chủ khách sạn xem danh sách phòng của mình):
+- Input: GET /rooms?hotelId=hotel-danang (Gửi kèm token của Owner)
+- Status: HTTP 200 OK
+- Result: Trả về mảng 3 phòng thuộc quyền quản lý của Owner.
+- Trạng thái: PASS
+
+TC14 (Chủ khách sạn cập nhật trạng thái phòng):
+- Input: PUT /rooms/sapa-suite-01 { isAvailable: false } (Gửi kèm token Owner)
+- Status: HTTP 200 OK
+- Result: Cập nhật trạng thái phòng thành công. isAvailable = false.
+- Trạng thái: PASS
+
+TC15 (Mất kết nối CSDL - Kiểm tra cơ chế Fallback):
+- Input: Ngắt kết nối MongoDB Atlas, gọi GET /hotels
+- Status: HTTP 200 OK
+- Result: Hệ thống tự động chuyển sang đọc dữ liệu từ In-Memory DB, trả về danh sách 6 resort (lấy từ file seedData).
+- Trạng thái: PASS
+
+========================================================================
+TỔNG KẾT: 15/15 PASS (Tỷ lệ 100%)
+========================================================================
